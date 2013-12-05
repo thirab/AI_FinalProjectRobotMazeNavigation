@@ -29,7 +29,7 @@ public class Wander implements Behavior {
 	public void action() {
 		try {
 			Thread.yield();
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 		} catch (InterruptedException ie) {
 		}
 		map.wander();

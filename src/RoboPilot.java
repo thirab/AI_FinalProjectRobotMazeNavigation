@@ -50,7 +50,9 @@ public class RoboPilot {
 			
 			b1 = new Wander(map);
 			b2 = new Avoid(us,map);
-			//TODO add sound sensor
+			
+			//TODO test sound sensor it currently creates a barrier wall (implying that the robot is heading in the wrong direction)
+			//This can easily be altered to turns etc... 
 			b4 = new Sound(ss,map);
 			b3 = new WinState(ls,map);
 			bArray = new Behavior[] {b1,b4,b2,b3};
