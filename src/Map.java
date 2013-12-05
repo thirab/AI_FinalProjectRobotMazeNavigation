@@ -63,8 +63,14 @@ public class Map {
 	public void impossible(){
 		possible=false;
 		getCurrentCell().setOptions(0);
-		//TODO exit program
 		robot.stop();
+		lejos.nxt.Sound.beepSequenceUp();
+		lejos.nxt.Sound.beepSequenceUp();
+		lejos.nxt.Sound.beepSequenceUp();
+		lejos.nxt.Sound.beepSequenceUp();
+		lejos.nxt.Sound.beepSequenceUp();
+		//exit the program
+		System.exit(0);
 	}
 	/**
 	 * isPossible returns wether or not the map is known to be possibly solveable
@@ -492,7 +498,7 @@ public class Map {
 	 */
 	public void MazeWon() {
 		goalReached=true;	
-		robot.stop();
+		stop();
 		System.out.println("I'm playing the food song!");
 		lejos.nxt.Sound.beepSequenceUp();
 		lejos.nxt.Sound.beepSequenceUp();
@@ -500,6 +506,17 @@ public class Map {
 		xGoal=x;
 		yGoal=y;
 		moveBack();
+	}
+	
+	/**
+	 * When a sound is heard by the robot, create a wall in the direction the robot was heading.
+	 */
+	public void SoundHeard(){
+		System.out.println("Shut up guys! You're being loud");
+		stop();
+		lejos.nxt.Sound.beepSequenceUp();
+		wall();
+		rotateToBestDirection();
 	}
 	
 	/**
@@ -514,8 +531,8 @@ public class Map {
 		}else{
 			while(path.size()!=1){
 		
-			Cell current = (Cell) path.pop();
-			Cell future = (Cell) path.peek();
+			Cell current = (Cell) path.remove(path.size());
+			Cell future = (Cell) path.get(path.size());
 			if(current.getX()>future.getX()){
 				faceWest();
 				forward();

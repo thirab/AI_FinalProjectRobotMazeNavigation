@@ -22,17 +22,27 @@ public class RoboPilot {
 		UltrasonicSensor us;
 		//light sensor to sense the goal state
 		LightSensor ls;	
+		SoundSensor ss;
 
 		Behavior b1;
 		Behavior b2;
 		Behavior b3;
+		Behavior b4;
 		Behavior[] bArray; 
 		Arbitrator arby;
+		
+		//TODO I removed the code from behaviors to map so that the pilot doesn't need repeated code however I am wondering if
+		//it will cause issues with Thread etc.
+		//if it does I can port back robot movements and keep map development it was simply to move it all to a main area for debugging and clarity. 
+		
+		//let me know what you think.
+		//I am unsure wether or not having nav away from the behaviors will cause problems.
 		
 		public RoboPilot () throws InterruptedException{
 			nav = new DifferentialPilot (wheelDiameter, trackWidth, Motor.C, Motor.A);
 			us = new UltrasonicSensor(SensorPort.S4);
 			ls = new LightSensor(SensorPort.S1);
+			ss = new SoundSensor(SensorPort.S2);
 			ls.setFloodlight(Color.WHITE);
 			initializePilot();
 			
@@ -41,9 +51,9 @@ public class RoboPilot {
 			b1 = new Wander(map);
 			b2 = new Avoid(us,map);
 			//TODO add sound sensor
-			//b3 = new BorderCross(nav,ls,cellDistance,map);
+			b4 = new Sound(ss,map);
 			b3 = new WinState(ls,map);
-			bArray = new Behavior[] {b1,b2,b3};
+			bArray = new Behavior[] {b1,b4,b2,b3};
 			arby = new Arbitrator(bArray);
 		}
 		
