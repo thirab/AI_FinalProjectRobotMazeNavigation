@@ -562,8 +562,9 @@ public class Map {
 	 */
 	public void wander() {
 		if(forwardIsValid()){
-			forward();
-			robot.travel(cellDistance);
+//			moved to wander / bordercross respectively
+//			forward();
+//			robot.travel(cellDistance);
 		}else{
 			rotateToBestDirection();
 		}

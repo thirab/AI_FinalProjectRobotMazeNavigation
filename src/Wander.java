@@ -6,13 +6,14 @@ public class Wander implements Behavior {
 	DifferentialPilot robot;
 	int upperThresh;
 	int lowerThresh;
-	double cellDistance;
+	double wanderDistance = 5;
 	Map map;
 
-	public Wander(Map m) {
+	public Wander(Map m,DifferentialPilot r ) {
 		upperThresh = 90;
 		lowerThresh = 10;
 		map = m;
+		robot = r;
 	}
 
 	@Override
@@ -33,34 +34,9 @@ public class Wander implements Behavior {
 		} catch (InterruptedException ie) {
 		}
 		map.wander();
+		robot.travel(wanderDistance);
+		
 	}
-
-	//
-	// public void findValidDirection(){
-	// if(map.rightIsValid()){
-	// map.turnRight();
-	// robot.rotate(90);
-	// map.forward();
-	// robot.travel(cellDistance);
-	// }else if(map.leftIsValid()){
-	// map.turnLeft();
-	// robot.rotate(-90);
-	// map.forward();
-	// robot.travel(cellDistance);
-	// }else if(map.backIsValid()){
-	// map.turnRight();
-	// robot.rotate(90);
-	// map.turnRight();
-	// robot.rotate(90);
-	// map.forward();
-	// robot.travel(cellDistance);
-	// }else{
-	// map.impossible();
-	// }
-	// }
-
-	
-
 	@Override
 	public void suppress() {
 		// update coordinates? stop.

@@ -7,6 +7,7 @@ import lejos.robotics.subsumption.Behavior;
 public class BorderCross implements Behavior {
 
 	DifferentialPilot robot;
+	Double wanderDistance=(double) 5;
 	LightSensor ls;
 	int generalLight;
 	int currentLight;
@@ -14,7 +15,7 @@ public class BorderCross implements Behavior {
 	Map map;
 
 
-	public BorderCross(DifferentialPilot p, LightSensor l, double cellDistance, Map m) {
+	public BorderCross(DifferentialPilot p, LightSensor l, Map m) {
 		robot = p;
 		ls = l;	
 		ls.setFloodlight(Color.WHITE);
@@ -51,6 +52,7 @@ public class BorderCross implements Behavior {
 				Thread.sleep(1000);	
 			}catch(InterruptedException	ie)	{}	
 			map.forward();
+			robot.travel(wanderDistance);
 		}
 	}
 
