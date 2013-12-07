@@ -78,6 +78,7 @@ public class Scope implements Behavior{
 				lejos.nxt.Sound.playSample(music);
 			}
 			lejos.nxt.Sound.beepSequenceUp();
+			//TODO there may be issues with the fact that map return assumes that the robot is in the center of the cell.
 			map.MazeWon();
 			suppressed = true;	//suppress is true
 			crossing = true;	// no longer eating, set to true
