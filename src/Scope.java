@@ -5,9 +5,6 @@ import lejos.robotics.Color;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
 
-/**
- * 
- */
 
 /**
  * @author Jackie and Tai
@@ -83,7 +80,7 @@ public class Scope implements Behavior{
 			lejos.nxt.Sound.beepSequenceUp();
 			map.MazeWon();
 			suppressed = true;	//suppress is true
-			crossing = false;	// no longer eating, set to false
+			crossing = true;	// no longer eating, set to true
 		}
 	}
 }

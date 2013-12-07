@@ -1,4 +1,9 @@
 
+/**
+ * 
+ * @author tai-lanhirabayashi & Jackie
+ *
+ */
 public class Cell {
 	private int x;
 	private int y;

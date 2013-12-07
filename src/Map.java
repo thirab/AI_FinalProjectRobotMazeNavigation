@@ -4,7 +4,11 @@ import java.util.Vector;
 
 import lejos.robotics.navigation.DifferentialPilot;
 
-
+/**
+ * 
+ * @author tai-lanhirabayashi & Jackie
+ *
+ */
 public class Map {
 	private boolean goalReached=false;
 	private int mapWidth = 9;

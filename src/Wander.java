@@ -1,6 +1,11 @@
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
 
+/**
+ * 
+ * @author tai-lanhirabayashi & Jackie
+ *
+ */
 public class Wander implements Behavior {
 
 	DifferentialPilot robot;

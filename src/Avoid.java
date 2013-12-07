@@ -4,7 +4,11 @@ import	lejos.robotics.*;
 import	lejos.robotics.subsumption.*;	
 import	lejos.nxt.*;
 import lejos.robotics.navigation.DifferentialPilot;
-
+/**
+ * 
+ * @author tai-lanhirabayashi & Jackie
+ *
+ */
 public class Avoid implements Behavior{
 
 	UltrasonicSensor us;

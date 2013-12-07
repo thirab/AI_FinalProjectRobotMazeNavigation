@@ -4,6 +4,11 @@ import	lejos.robotics.*;
 import	lejos.robotics.subsumption.*;
 import lejos.robotics.navigation.DifferentialPilot;
 
+/**
+ * 
+ * @author tai-lanhirabayashi & Jackie
+ *
+ */
 //TODO: finish adding listeners to behavior classes. add the buttons for terminating programs 
 //maybe add the sound behavior when everything works
 //light calibration (realized she wanted us to use the lightsensor so i changed it back)
@@ -55,14 +60,8 @@ public class RoboPilot {
 			//TODO test sound sensor it currently creates a barrier wall (implying that the robot is heading in the wrong direction)
 			//This can easily be altered to turns etc... 
 			b4 = new Sound(ss,map);
-<<<<<<< HEAD
-			b3 = new WinState(ls,map);
-			b5= new BorderCross(nav, ls,map);
-			bArray = new Behavior[] {b1,b4,b2,b3, b5};
-=======
 			b3 = new Scope(nav,cs,map);
 			bArray = new Behavior[] {b1,b4,b2,b3};
->>>>>>> 9afd0d0ed2a0f9fd7962d715307be49689e5e931
 			arby = new Arbitrator(bArray);
 		}
 		
