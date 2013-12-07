@@ -21,7 +21,7 @@ public class RoboPilot {
 		//TouchSensor	tSensor	=	new	TouchSensor(SensorPort.S1);	
 		UltrasonicSensor us;
 		//light sensor to sense the goal state
-		LightSensor ls;	
+		ColorSensor cs;	
 		SoundSensor ss;
 
 		Behavior b1;
@@ -41,9 +41,9 @@ public class RoboPilot {
 		public RoboPilot () throws InterruptedException{
 			nav = new DifferentialPilot (wheelDiameter, trackWidth, Motor.C, Motor.A);
 			us = new UltrasonicSensor(SensorPort.S4);
-			ls = new LightSensor(SensorPort.S1);
+			cs = new ColorSensor(SensorPort.S1);
 			ss = new SoundSensor(SensorPort.S2);
-			ls.setFloodlight(Color.WHITE);
+			cs.setFloodlight(Color.WHITE);
 			initializePilot();
 			
 			map = new Map(nav, cellDistance);
@@ -54,7 +54,7 @@ public class RoboPilot {
 			//TODO test sound sensor it currently creates a barrier wall (implying that the robot is heading in the wrong direction)
 			//This can easily be altered to turns etc... 
 			b4 = new Sound(ss,map);
-			b3 = new WinState(ls,map);
+			b3 = new Scope(nav,cs,map);
 			bArray = new Behavior[] {b1,b4,b2,b3};
 			arby = new Arbitrator(bArray);
 		}

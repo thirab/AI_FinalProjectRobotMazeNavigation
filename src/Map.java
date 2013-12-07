@@ -499,10 +499,10 @@ public class Map {
 	public void MazeWon() {
 		goalReached=true;	
 		stop();
-		System.out.println("I'm playing the food song!");
-		lejos.nxt.Sound.beepSequenceUp();
-		lejos.nxt.Sound.beepSequenceUp();
-		lejos.nxt.Sound.beepSequenceUp();
+		System.out.println("I'm playing the win song!");
+		//lejos.nxt.Sound.beepSequenceUp();
+		//lejos.nxt.Sound.beepSequenceUp();
+		//lejos.nxt.Sound.beepSequenceUp();
 		xGoal=x;
 		yGoal=y;
 		moveBack();
