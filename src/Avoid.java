@@ -20,7 +20,7 @@ public class Avoid implements Behavior{
 	public Avoid (UltrasonicSensor u, Map m){
 		
 		us = u;	
-		blockInRange = 30; //block in 1 ft
+		blockInRange = 7; //block in 1 ft
 		map=m;
 	}
 	/**
@@ -50,6 +50,9 @@ public class Avoid implements Behavior{
 			Thread.yield();	
 			Thread.sleep(1000);		//	Stops	for	a	short	time	(one	second)		
 		}catch(InterruptedException	ie)	{}		
+		//TO DO check map and know where to turn - right leaning?
+		
+		
 	}
 
 	@Override
