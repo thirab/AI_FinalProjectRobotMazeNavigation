@@ -53,7 +53,7 @@ public class Map {
 			theMap[mapWidth][j].setObstacle();
 			theMap[mapWidth-1][j].move();
 		}
-		theMap[xStart][yStart].visit();
+		theMap[xStart][yStart].visit(); //would we need to set options here? what if there were two directions from start cell
 		path=new ArrayList<Cell>();
 		path.add(getCurrentCell());
 	}
@@ -64,8 +64,6 @@ public class Map {
 		possible=false;
 		getCurrentCell().setOptions(0);
 		robot.stop();
-		lejos.nxt.Sound.beepSequenceUp();
-		lejos.nxt.Sound.beepSequenceUp();
 		lejos.nxt.Sound.beepSequenceUp();
 		lejos.nxt.Sound.beepSequenceUp();
 		lejos.nxt.Sound.beepSequenceUp();
@@ -123,6 +121,8 @@ public class Map {
 		}
 		
 		//TODO debug this, this may not be accurate. The idea is that cells that have been visited should have 1 less move option avaliable
+		//move options depend on barriers, so cells shouldnt automatically start with 4. will fix
+		//
 		Cell current = getCurrentCell();
 		buildPath(current);
 		if(current.visited()){
@@ -147,8 +147,9 @@ public class Map {
 	public void buildPath(Cell c){
 		
 		//if the cell is already within the list remove all cells that come after it.
-		int location = path.indexOf(c);
-		if(location != -1){
+		int location = path.indexOf(c); 	
+		if(location != -1){ //why are you removing all the cells after it, shouldn't you remove each one as you get to it?
+			//in case one of the following cells has another option
 			//TODO this must be debugged not sure if the math is right.
 			for(int i =0; i<(path.size()-location); i++){
 				path.remove(path.size());
@@ -379,7 +380,7 @@ public class Map {
 	 */
 	public void wall(){
 		
-		//TODO check logic
+		//TODO check logic -- why would you do this, as it could obliterate the maze functionality and make it impossible
 		if(direction == 'n'){
 			for(int i=0; i<mapWidth;i++){
 				theMap[i][y+1].setObstacle();
@@ -564,6 +565,7 @@ public class Map {
 		if(forwardIsValid()){
 			forward();
 			robot.travel(cellDistance);
+			//robot.forward();
 		}else{
 			rotateToBestDirection();
 		}

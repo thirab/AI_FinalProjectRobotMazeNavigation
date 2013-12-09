@@ -65,11 +65,11 @@ public class Scope implements Behavior{
 	 */
 	@Override
 	public void action() {
-		//set eating to true so arbitrator cannot call takeControl again on food source
+		//set crossing to true so arbitrator cannot call takeControl again on line source
 		crossing = true;
 		if(colorID == 2){
 			//robot.travel(5); //need to change this
-			while(colorID == 2){ //till he crosses line
+			while(colorID == 2){ //till his sensor crosses line
 				robot.forward(); 
 			}
 			map.forward();

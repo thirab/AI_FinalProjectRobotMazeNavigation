@@ -49,7 +49,7 @@ public class RoboPilot {
 			map = new Map(nav, cellDistance);
 			
 			b1 = new Wander(map);
-			b2 = new Avoid(us,map);
+			b2 = new Avoid(us,map,nav);
 			
 			//TODO test sound sensor it currently creates a barrier wall (implying that the robot is heading in the wrong direction)
 			//This can easily be altered to turns etc... 

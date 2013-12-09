@@ -30,8 +30,9 @@ public class Wander implements Behavior {
 		try {
 			Thread.yield();
 			Thread.sleep(2000);
-		} catch (InterruptedException ie) {
-		}
+		} catch (InterruptedException ie) {}
+		//WE NEED TO THINK ABOUT SETTING VALID CHECKERS TO SET NUM OF CELL OPTIONS
+		
 		map.wander();
 	}
 
