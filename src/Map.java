@@ -242,28 +242,40 @@ public class Map {
 	 * @return the cell
 	 */
 	public Cell getWestCell(){
+		if(x>0){
 		return theMap[x-1][y];
+		}
+		return null;
 	}
 	/**
 	 * gets the East direction cell
 	 * @return the cell
 	 */
 	public Cell getEastCell(){
+		if(x<mapWidth){
 		return theMap[x+1][y];
+		}
+		return null;
 	}
 	/**
 	 * gets the North direction cell
 	 * @return the cell
 	 */
 	public Cell getNorthCell(){
+		if(y<mapHeight){
 		return theMap[x][y+1];
+		}
+		return null;
 	}
 	/**
 	 * gets the South direction cell
 	 * @return the cell
 	 */
 	public Cell getSouthCell(){
+		if(y>0){
 		return theMap[x][y-1];
+		}
+		return null;
 	}
 	
 	/**
@@ -293,6 +305,7 @@ public class Map {
 	public void rotateToBestDirection(){
 		Cell best = getBest();
 		Cell current = getCurrentCell();
+		if(best!= null){
 		if(best.getX() > current.getX()){
 			faceEast();
 		}else if(best.getX() < current.getX()){
@@ -301,6 +314,10 @@ public class Map {
 			faceNorth();
 		}else if(best.getY() < current.getY()){
 			faceSouth();
+		}
+		}else{
+			impossible();
+			stop();
 		}
 	}
 	
@@ -409,10 +426,16 @@ public class Map {
 	 * @return
 	 */
 	public boolean isValidCell(int xC, int yC){
+		//if the cell exists
+		if(xC<mapWidth && xC>=0 && yC<mapHeight && yC>=0){
+			
+			//check if it can be moved into (is it an obstacle, does it have options)
 		if(theMap[xC][yC].isObstacle() || theMap[xC][yC].optionsAvaliable() == 0){
 			return false;
 		}
 		return true;
+		}
+		return false;
 	}
 	/**
 	 * goal returns wether or not the goal (white cell) has been reached
@@ -455,15 +478,30 @@ public class Map {
 	 */
 	public Cell getBest() {
 		Cell best = getNorthCell();
-		int value = best.optionsAvaliable();
-		if (getEastCell().optionsAvaliable() > value) {
-			best = getEastCell();
-		} else if (getWestCell().optionsAvaliable() > value) {
-			best = getWestCell();
-		} else if (getSouthCell().optionsAvaliable() > value) {
-			best = getSouthCell();
+		Cell east = getEastCell();
+		Cell south = getSouthCell();
+		Cell west = getWestCell();
+		if(best == null){
+			best = east;
 		}
+		if(best == null){
+			best = south;
+		}
+		if(best == null){
+			best = west;
+		}
+		if(best != null){
+			int value = best.optionsAvaliable();
+			if (east!= null && east.optionsAvaliable() > value) {
+				best = east;
+			} else if (west != null && west.optionsAvaliable() > value) {
+				best =west;
+			} else if (south != null && south.optionsAvaliable() > value) {
+				best = south;
+			}
 		return best;
+		}
+		return null;
 	}
 	
 
