@@ -154,58 +154,58 @@ public class Map {
 	 * @param c the current cell to add
 	 */
 	public void buildPath(Cell c){
-		
-		//if the cell is already within the list remove all cells that come after it.
-		int location = path.indexOf(c);
-		if(location != -1){
-			System.out.println("Ive been here before");
-			//TODO this must be debugged not sure if the math is right.
-			for(int i =0; i<(path.size()-location); i++){
-				path.remove(path.size());
-			}
-		}else{
-			
-			// if the cell is not already in the list check it's four adjacent cells. 
-			//If any exist in the list take the lowest index, and remove all cells after it.
-			//the idea is to join adjacent cells that would otherwise allow the path to loop around.
-			
-			Cell north = getNorthCell();
-			Cell east = getEastCell();
-			Cell west = getWestCell();
-			Cell south = getSouthCell();
-			
-			int n = path.indexOf(north);
-			int e = path.indexOf(east);
-			int w = path.indexOf(west);
-			int s = path.indexOf(south);
-			int lowestIndex = path.size();
-			
-			//check if any of the following cells are contained within the path
-			if(n!=-1){
-				lowestIndex=n;
-			}
-			if(e!=-1 && e<lowestIndex){
-				lowestIndex=e;
-			}
-			if(s!=-1&& s<lowestIndex){
-				lowestIndex=s;
-			}
-			if(w!=-1&& w<lowestIndex){
-				lowestIndex=w;
-			}
-			
-			if(lowestIndex != path.size()-1 ){
-				//take the lowest contained cell and remove all cells in the path after it.
-				for(int i =0; i<(path.size()-lowestIndex); i++){
-					path.remove(path.size());
-				}
-			}
-			
-			//add the current cell to the path
+//		
+//		//if the cell is already within the list remove all cells that come after it.
+//		int location = path.indexOf(c);
+//		if(location != -1){
+//			System.out.println("Ive been here before");
+//			//TODO this must be debugged not sure if the math is right.
+//			for(int i =0; i<(path.size()-location); i++){
+//				path.remove(path.size());
+//			}
+//		}else{
+//			
+//			// if the cell is not already in the list check it's four adjacent cells. 
+//			//If any exist in the list take the lowest index, and remove all cells after it.
+//			//the idea is to join adjacent cells that would otherwise allow the path to loop around.
+//			
+//			Cell north = getNorthCell();
+//			Cell east = getEastCell();
+//			Cell west = getWestCell();
+//			Cell south = getSouthCell();
+//			
+//			int n = path.indexOf(north);
+//			int e = path.indexOf(east);
+//			int w = path.indexOf(west);
+//			int s = path.indexOf(south);
+//			int lowestIndex = path.size();
+//			
+//			//check if any of the following cells are contained within the path
+//			if(n!=-1){
+//				lowestIndex=n;
+//			}
+//			if(e!=-1 && e<lowestIndex){
+//				lowestIndex=e;
+//			}
+//			if(s!=-1&& s<lowestIndex){
+//				lowestIndex=s;
+//			}
+//			if(w!=-1&& w<lowestIndex){
+//				lowestIndex=w;
+//			}
+//			
+//			if(lowestIndex != path.size()-1 ){
+//				//take the lowest contained cell and remove all cells in the path after it.
+//				for(int i =0; i<(path.size()-lowestIndex); i++){
+//					path.remove(path.size());
+//				}
+//			}
+//			
+//			//add the current cell to the path
 			path.add(c);
 
-		}	
-		System.out.println("Path size: " + path.size());
+//		}	
+//		System.out.println("Path size: " + path.size());
 	}
 	/**
 	 * adjusts the location of the navigator backward
