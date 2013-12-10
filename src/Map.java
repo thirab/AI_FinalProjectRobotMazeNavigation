@@ -511,6 +511,7 @@ public class Map {
 			}
 			return best;
 		}
+		System.out.println("theres something wrong, there are no moves");
 		return null;
 	}
 	
@@ -658,6 +659,7 @@ public class Map {
 	 * instructs the navigator to wander within the map
 	 */
 	public void wander() {
+		System.out.println("This is my direction: " + direction);
 		rotateToBestDirection();
 //		if(forwardIsValid()){
 ////			moved to wander / bordercross respectively
