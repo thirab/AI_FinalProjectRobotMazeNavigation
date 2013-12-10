@@ -627,7 +627,7 @@ public class Map {
 		if(path == null){
 			System.out.println("There is no path left");
 		}else{
-			while(path.size()!=1){
+			while(path.size()>=1){
 		
 			Cell current = (Cell) path.remove(path.size());
 			Cell future = (Cell) path.get(path.size());
