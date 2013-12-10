@@ -71,12 +71,11 @@ public class Scope implements Behavior{
 		crossing = true;
 		if(colorID == 2){
 			System.out.println("Color is blue: " + cs.getColorID());
-			robot.travel(5); //need to change this
+			robot.travel(15); //need to change this
 //			while(colorID == 2){ //till he crosses line d
 //				robot.forward(); 
 //			}
 			map.forward();
-			//robot.stop();
 			crossing = false;
 		}
 		else if(colorID == 7){

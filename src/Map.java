@@ -11,14 +11,14 @@ import lejos.robotics.navigation.DifferentialPilot;
  */
 public class Map {
 	private boolean goalReached=false;
-	private int mapWidth = 13;
-	private int mapHeight = 13;
+	private int mapWidth = 10;
+	private int mapHeight = 7;
 	private Cell[][] theMap = new Cell[mapWidth][mapWidth];
 	private char direction = 'n';
 	
 	//set robot in middle of possible map
 	private int xStart = 1;
-	private int yStart = 3;
+	private int yStart = 1;
 	private int xGoal;
 	private int yGoal;
 	private int x = xStart;
@@ -45,20 +45,20 @@ public class Map {
 				theMap[i][j] = new Cell(i,j);				
 			}
 			//set the outer cells to barriers
-//			theMap[i][0].setObstacle();
-//			theMap[i][1].move();
+			theMap[i][0].setObstacle();
+			theMap[i][1].move();
 			
 			//no preset walls
-//			theMap[i][mapHeight].setObstacle();
-//			theMap[i][mapHeight-1].move();
+			theMap[i][mapHeight-1].setObstacle();
+			theMap[i][mapHeight-2].move();
 		}
-//		//set outer cells to barriers
-//		for(int j=0; j<mapHeight;j++){
-//			theMap[0][j].setObstacle();
-//			theMap[1][j].move();
-//			theMap[mapWidth][j].setObstacle();
-//			theMap[mapWidth-1][j].move();
-//		}
+		//set outer cells to barriers
+		for(int j=0; j<mapHeight;j++){
+			theMap[0][j].setObstacle();
+			theMap[1][j].move();
+			theMap[mapWidth-1][j].setObstacle();
+			theMap[mapWidth-2][j].move();
+		}
 		theMap[xStart][yStart].visit();
 		path=new ArrayList<Cell>();
 		path.add(getCurrentCell());
@@ -195,10 +195,10 @@ public class Map {
 			}
 			
 			if(lowestIndex != path.size()-1 ){
-			//take the lowest contained cell and remove all cells in the path after it.
-			for(int i =0; i<(path.size()-lowestIndex); i++){
-				path.remove(path.size());
-			}
+				//take the lowest contained cell and remove all cells in the path after it.
+				for(int i =0; i<(path.size()-lowestIndex); i++){
+					path.remove(path.size());
+				}
 			}
 			
 			//add the current cell to the path
@@ -252,7 +252,7 @@ public class Map {
 	 * @return the cell
 	 */
 	public Cell getEastCell(){
-		if(x<mapWidth){
+		if(x<mapWidth-1){
 		return theMap[x+1][y];
 		}
 		return null;
@@ -262,7 +262,7 @@ public class Map {
 	 * @return the cell
 	 */
 	public Cell getNorthCell(){
-		if(y<mapHeight){
+		if(y<mapHeight-1){
 		return theMap[x][y+1];
 		}
 		return null;
@@ -303,21 +303,26 @@ public class Map {
 	 * rotateToBestDirection changes the navigators direction to face the optimal best cell
 	 */
 	public void rotateToBestDirection(){
+		System.out.println("Finding the best");
 		Cell best = getBest();
 		Cell current = getCurrentCell();
 		if(best!= null){
 		if(best.getX() > current.getX()){
+			System.out.println("go east");
 			faceEast();
 		}else if(best.getX() < current.getX()){
+			System.out.println("go west");
 			faceWest();
 		}else if(best.getY() > current.getY()){
+			System.out.println("Go north");
 			faceNorth();
 		}else if(best.getY() < current.getY()){
+			System.out.println("go south");
 			faceSouth();
 		}
 		}else{
-			impossible();
-			stop();
+			System.out.println("There are no options");
+			//impossible();
 		}
 	}
 	
@@ -328,6 +333,7 @@ public class Map {
 	 */
 	public void handleObstacleFound(int xC, int yC){
 		System.out.println("Handing the obstacle like a boss");
+		if(!theMap[xC][yC].isObstacle()){
 		theMap[xC][yC].setObstacle();
 		if(xC >0){
 		theMap[xC-1][yC].move();
@@ -340,6 +346,7 @@ public class Map {
 		}
 		if(yC<mapHeight-1){
 		theMap[xC][yC+1].move();
+		}
 		}
 	}
 	
@@ -427,7 +434,7 @@ public class Map {
 	 */
 	public boolean isValidCell(int xC, int yC){
 		//if the cell exists
-		if(xC<mapWidth && xC>=0 && yC<mapHeight && yC>=0){
+		if(xC<mapWidth-1 && xC>=0 && yC<mapHeight-1 && yC>=0){
 			
 			//check if it can be moved into (is it an obstacle, does it have options)
 		if(theMap[xC][yC].isObstacle() || theMap[xC][yC].optionsAvaliable() == 0){
@@ -482,12 +489,15 @@ public class Map {
 		Cell south = getSouthCell();
 		Cell west = getWestCell();
 		if(best == null){
+			System.out.println("there is no north cell");
 			best = east;
 		}
 		if(best == null){
+			System.out.println("there is no east cell");
 			best = south;
 		}
 		if(best == null){
+			System.out.println("there is no south cell");
 			best = west;
 		}
 		if(best != null){
@@ -499,7 +509,7 @@ public class Map {
 			} else if (south != null && south.optionsAvaliable() > value) {
 				best = south;
 			}
-		return best;
+			return best;
 		}
 		return null;
 	}
@@ -511,16 +521,16 @@ public class Map {
 	public void faceWest() {
 		if (getDirection() == 'n') {
 			turnLeft();
-			robot.rotate(-90);
+			robot.rotate(90);
 		} else if (getDirection() == 'e') {
 			turnRight();
-			robot.rotate(90);
+			robot.rotate(-90);
 			turnRight();
-			robot.rotate(90);
+			robot.rotate(-90);
 
 		} else if (getDirection() == 's') {
 			turnRight();
-			robot.rotate(90);
+			robot.rotate(-90);
 		}
 	}
 	/**
@@ -529,16 +539,16 @@ public class Map {
 	public void faceEast() {
 		if (getDirection() == 'n') {
 			turnRight();
-			robot.rotate(90);
+			robot.rotate(-90);
 
 		} else if (getDirection() == 's') {
 			turnLeft();
-			robot.rotate(-90);
+			robot.rotate(90);
 		} else if (getDirection() == 'w') {
 			turnRight();
-			robot.rotate(90);
+			robot.rotate(-90);
 			turnRight();
-			robot.rotate(90);
+			robot.rotate(-90);
 		}
 	}
 
@@ -548,15 +558,15 @@ public class Map {
 	public void faceNorth() {
 		if (getDirection() == 'w') {
 			turnRight();
-			robot.rotate(90);
+			robot.rotate(-90);
 		} else if (getDirection() == 'e') {
 			turnLeft();
-			robot.rotate(-90);
+			robot.rotate(90);
 		} else if (getDirection() == 's') {
 			turnRight();
-			robot.rotate(90);
+			robot.rotate(-90);
 			turnRight();
-			robot.rotate(90);
+			robot.rotate(-90);
 		}
 	}
 
@@ -566,15 +576,15 @@ public class Map {
 	public void faceSouth() {
 		if (getDirection() == 'n') {
 			turnRight();
-			robot.rotate(90);
+			robot.rotate(-90);
 			turnRight();
-			robot.rotate(90);
+			robot.rotate(-90);
 		} else if (getDirection() == 'e') {
 			turnRight();
-			robot.rotate(90);
+			robot.rotate(-90);
 		} else if (getDirection() == 'w') {
 			turnLeft();
-			robot.rotate(-90);
+			robot.rotate(90);
 		}
 	}
 	
@@ -584,14 +594,16 @@ public class Map {
 	 */
 	public void mazeWon() {
 		goalReached=true;	
-		stop();
 		System.out.println("I'm playing the win song!");
-		//lejos.nxt.Sound.beepSequenceUp();
-		//lejos.nxt.Sound.beepSequenceUp();
-		//lejos.nxt.Sound.beepSequenceUp();
+		lejos.nxt.Sound.beepSequenceUp();
+		lejos.nxt.Sound.beepSequenceUp();
+		lejos.nxt.Sound.beepSequenceUp();
 		xGoal=x;
 		yGoal=y;
-		moveBack();
+		
+		//TODO currently erroring out
+		//moveBack();
+		stop();
 	}
 	
 	/**
@@ -599,7 +611,6 @@ public class Map {
 	 */
 	public void SoundHeard(){
 		System.out.println("Shut up guys! You're being loud");
-		stop();
 		lejos.nxt.Sound.beepSequenceUp();
 		wall();
 		rotateToBestDirection();
@@ -647,13 +658,14 @@ public class Map {
 	 * instructs the navigator to wander within the map
 	 */
 	public void wander() {
-		if(forwardIsValid()){
-//			moved to wander / bordercross respectively
-//			forward();
-//			robot.travel(cellDistance);
-		}else{
-			rotateToBestDirection();
-		}
+		rotateToBestDirection();
+//		if(forwardIsValid()){
+////			moved to wander / bordercross respectively
+////			forward();
+////			robot.travel(cellDistance);
+//		}else{
+//			rotateToBestDirection();
+//		}
 	}
 
 	/**

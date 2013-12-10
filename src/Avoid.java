@@ -34,6 +34,7 @@ public class Avoid implements Behavior{
 	public boolean takeControl() {
 		//System.out.println("Avoid is trying to take control, current distance is" + " "+ us.getDistance());
 		if (us.getDistance() <= blockInRange && !map.goal()){
+			System.out.println("Avoiding");
 			//System.out.println("The distance from the wall is" + us.getDistance());
 			return true;
 		}else{

@@ -11,7 +11,7 @@ public class Wander implements Behavior {
 	DifferentialPilot robot;
 	int upperThresh;
 	int lowerThresh;
-	double wanderDistance = 5;
+	double wanderDistance = 15;
 	Map map;
 
 	public Wander(Map m,DifferentialPilot r ) {
@@ -25,6 +25,7 @@ public class Wander implements Behavior {
 	public boolean takeControl() {
 		// if all sensors are clear, take control
 		if (map.isPossible() && !map.goal()) {
+			System.out.println("Wandering");
 			return true;
 		}
 		// TODO shut down if map is impossible
