@@ -11,6 +11,7 @@ public class Cell {
 	private boolean visited = false;
 	private int options = 4;
 	private boolean path= false;
+	private boolean checked = false;
 	
 	/**
 	 * Cell creates a new cell value with x,y cordinates.
@@ -55,6 +56,13 @@ public class Cell {
 		options = o;
 	}
 	
+	public boolean wasChecked(){
+		return checked;
+	}
+	
+	public void check(){
+		checked = true;
+	}
 	/**
 	 * visit set's the cell to having been visited. 
 	 */

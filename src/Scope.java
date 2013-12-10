@@ -39,15 +39,18 @@ public class Scope implements Behavior{
 	@Override
 	public boolean takeControl() { 
 		//if not in the middle of crossing, and new blue tape detected proceed
-		if(!crossing && cs.getColorID() == 2){ //Color.BLUE == 2
+		if(!crossing && cs.getColorID() == 2 && !map.goal()){ //Color.BLUE == 2
 				colorID = cs.getColorID();
 				suppressed = false; //set suppressed check to false
 				return true; //take control! time to feed
-		}else if(!crossing && cs.getColorID() == 6){ //Color.WHITE = 6
+		}
+		
+		else if(!crossing && cs.getColorID() == 7){ //Color.BLACK = 7
 			suppressed = false; //set suppressed check to false
 			colorID = cs.getColorID();
 			return true; //
-		}else{
+		}
+		else{
 			return false; //supress
 		}
 	}
@@ -65,21 +68,24 @@ public class Scope implements Behavior{
 		//set eating to true so arbitrator cannot call takeControl again on food source
 		crossing = true;
 		if(colorID == 2){
-			//robot.travel(5); //need to change this
-			while(colorID == 2){ //till he crosses line
-				robot.forward(); 
-			}
+			System.out.println("Color is blue: " + cs.getColorID());
+			robot.travel(5); //need to change this
+//			while(colorID == 2){ //till he crosses line
+//				robot.forward(); 
+//			}
 			map.forward();
 			robot.stop();
+			suppressed=true;
 		}
-		else if(colorID == 6){
+		else if(colorID == 7){
+			System.out.println("Color is BLACK: " + cs.getColorID());
 			robot.travel(6);
 			while(robot.isMoving()){ //wait for 3 seconds
 				lejos.nxt.Sound.playSample(music);
 			}
 			lejos.nxt.Sound.beepSequenceUp();
 			//TODO there may be issues with the fact that map return assumes that the robot is in the center of the cell.
-			map.MazeWon();
+			map.mazeWon();
 			suppressed = true;	//suppress is true
 			crossing = true;	// no longer eating, set to true
 		}

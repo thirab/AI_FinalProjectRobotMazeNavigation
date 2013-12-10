@@ -11,14 +11,14 @@ import lejos.robotics.navigation.DifferentialPilot;
  */
 public class Map {
 	private boolean goalReached=false;
-	private int mapWidth = 9;
-	private int mapHeight = 7;
-	private Cell[][] theMap;
+	private int mapWidth = 13;
+	private int mapHeight = 13;
+	private Cell[][] theMap = new Cell[mapWidth][mapWidth];
 	private char direction = 'n';
 	
 	//set robot in middle of possible map
 	private int xStart = 1;
-	private int yStart = 1;
+	private int yStart = 3;
 	private int xGoal;
 	private int yGoal;
 	private int x = xStart;
@@ -45,18 +45,20 @@ public class Map {
 				theMap[i][j] = new Cell(i,j);				
 			}
 			//set the outer cells to barriers
-			theMap[i][0].setObstacle();
-			theMap[i][1].move();
-			theMap[i][mapHeight].setObstacle();
-			theMap[i][mapHeight-1].move();
+//			theMap[i][0].setObstacle();
+//			theMap[i][1].move();
+			
+			//no preset walls
+//			theMap[i][mapHeight].setObstacle();
+//			theMap[i][mapHeight-1].move();
 		}
-		//set outer cells to barriers
-		for(int j=0; j<mapHeight;j++){
-			theMap[0][j].setObstacle();
-			theMap[1][j].move();
-			theMap[mapWidth][j].setObstacle();
-			theMap[mapWidth-1][j].move();
-		}
+//		//set outer cells to barriers
+//		for(int j=0; j<mapHeight;j++){
+//			theMap[0][j].setObstacle();
+//			theMap[1][j].move();
+//			theMap[mapWidth][j].setObstacle();
+//			theMap[mapWidth-1][j].move();
+//		}
 		theMap[xStart][yStart].visit();
 		path=new ArrayList<Cell>();
 		path.add(getCurrentCell());
@@ -65,6 +67,7 @@ public class Map {
 	 * impossible sets the map possibility to be solved to false, and set's the cell options to 0
 	 */
 	public void impossible(){
+		System.out.println("This is impossible I quit!");
 		possible=false;
 		getCurrentCell().setOptions(0);
 		robot.stop();
@@ -87,6 +90,7 @@ public class Map {
 	 * adjusts the navigator position right
 	 */
 	public void turnRight(){
+		System.out.println("turn right");
 		if(direction == 'n'){
 			direction ='e';
 		}else if(direction == 'e'){
@@ -101,6 +105,7 @@ public class Map {
 	 * adjusts the navigator position left
 	 */
 	public void turnLeft(){
+		System.out.println("Turn left");
 		if(direction == 'n'){
 			direction ='w';
 		}else if(direction == 'e'){
@@ -116,6 +121,7 @@ public class Map {
 	 * adjusts the navigator position forward
 	 */
 	public void forward(){	
+		System.out.println("cell forward");
 		if(direction == 'n'){
 			y++;
 		}else if(direction == 'e'){
@@ -149,10 +155,12 @@ public class Map {
 	 * @param c the current cell to add
 	 */
 	public void buildPath(Cell c){
+		System.out.println("Building the path");
 		
 		//if the cell is already within the list remove all cells that come after it.
 		int location = path.indexOf(c);
 		if(location != -1){
+			System.out.println("Ive been here before");
 			//TODO this must be debugged not sure if the math is right.
 			for(int i =0; i<(path.size()-location); i++){
 				path.remove(path.size());
@@ -270,6 +278,11 @@ public class Map {
 		}else if(direction == 'w'){
 			handleObstacleFound(x-1,y);
 		}
+		if(getCurrentCell().optionsAvaliable()>0){
+			rotateToBestDirection();
+		}else{
+			impossible();
+		}
 	}
 	
 	/**
@@ -295,11 +308,20 @@ public class Map {
 	 * @param yC co-ordinates
 	 */
 	public void handleObstacleFound(int xC, int yC){
+		System.out.println("Handing the obstacle like a boss");
 		theMap[xC][yC].setObstacle();
+		if(xC >0){
 		theMap[xC-1][yC].move();
+		}
+		if(xC<mapWidth -1){
 		theMap[xC+1][yC].move();
+		}
+		if(yC>0){
 		theMap[xC][yC-1].move();
-		theMap[xC][yC+1].move();	
+		}
+		if(yC<mapHeight-1){
+		theMap[xC][yC+1].move();
+		}
 	}
 	
 	/**
@@ -313,6 +335,26 @@ public class Map {
 		turnLeft();
 		return valid;
 	}
+	
+//	public boolean rightChecked(){
+//		if(direction == 'n'){
+//			return theMap[x][y].wasChecked();
+//		}else if(direction == 'e'){
+//			
+//		}else if(direction == 's'){
+//			
+//		}else{
+//			
+//		}
+//	}
+//	
+//	public boolean backChecked(){
+//		
+//	}
+//	
+//	public boolean leftChecked(){
+//		
+//	}
 	
 	/**
 	 * leftIsValid checks if it is valid to move left
@@ -500,7 +542,7 @@ public class Map {
 	 * MazeWon occurs when a white cell has been found.
 	 * This begins the navigators path back to the start cell.
 	 */
-	public void MazeWon() {
+	public void mazeWon() {
 		goalReached=true;	
 		stop();
 		System.out.println("I'm playing the win song!");

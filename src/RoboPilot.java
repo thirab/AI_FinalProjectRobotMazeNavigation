@@ -27,13 +27,13 @@ public class RoboPilot {
 		UltrasonicSensor us;
 		//light sensor to sense the goal state
 		ColorSensor cs;	
-		SoundSensor ss;
+		//SoundSensor ss;
+		//LightSensor ls;	
 
 		Behavior b1;
 		Behavior b2;
 		Behavior b3;
 		Behavior b4;
-		Behavior b5;
 		Behavior[] bArray; 
 		Arbitrator arby;
 		
@@ -48,20 +48,29 @@ public class RoboPilot {
 			nav = new DifferentialPilot (wheelDiameter, trackWidth, Motor.C, Motor.A);
 			us = new UltrasonicSensor(SensorPort.S4);
 			cs = new ColorSensor(SensorPort.S1);
-			ss = new SoundSensor(SensorPort.S2);
+			//ss = new SoundSensor(SensorPort.S3);
 			cs.setFloodlight(Color.WHITE);
+			//ls = new LightSensor(SensorPort.S2);
 			initializePilot();
 			
 			map = new Map(nav, cellDistance);
 			
 			b1 = new Wander(map, nav);
 			b2 = new Avoid(us,map);
+			//b4 = new Feed(ls,map);
 			
 			//TODO test sound sensor it currently creates a barrier wall (implying that the robot is heading in the wrong direction)
 			//This can easily be altered to turns etc... 
-			b4 = new Sound(ss,map);
+		//	b4 = new Sound(ss,map);
 			b3 = new Scope(nav,cs,map);
-			bArray = new Behavior[] {b1,b4,b2,b3};
+		//	bArray = new Behavior[] {b1,b4,b2,b3};
+			
+			//testing without sonic sensor
+			bArray = new Behavior[] {b1,b2, b3};
+			
+			
+			//testing without scope
+			//bArray = new Behavior[] {b1,b2};
 			arby = new Arbitrator(bArray);
 		}
 		
