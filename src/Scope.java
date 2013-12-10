@@ -65,6 +65,8 @@ public class Scope implements Behavior{
 	 */
 	@Override
 	public void action() {
+		
+		//TODO this is not being called again after it is called once
 		//set eating to true so arbitrator cannot call takeControl again on food source
 		crossing = true;
 		if(colorID == 2){
@@ -75,7 +77,6 @@ public class Scope implements Behavior{
 //			}
 			map.forward();
 			robot.stop();
-			suppressed=true;
 		}
 		else if(colorID == 7){
 			System.out.println("Color is BLACK: " + cs.getColorID());

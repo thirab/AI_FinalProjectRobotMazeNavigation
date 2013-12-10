@@ -131,7 +131,6 @@ public class Map {
 		}else if(direction == 'w'){
 			x--;
 		}
-		
 		//TODO debug this, this may not be accurate. The idea is that cells that have been visited should have 1 less move option avaliable
 		Cell current = getCurrentCell();
 		buildPath(current);
@@ -155,7 +154,6 @@ public class Map {
 	 * @param c the current cell to add
 	 */
 	public void buildPath(Cell c){
-		System.out.println("Building the path");
 		
 		//if the cell is already within the list remove all cells that come after it.
 		int location = path.indexOf(c);
@@ -196,14 +194,18 @@ public class Map {
 				lowestIndex=w;
 			}
 			
+			if(lowestIndex != path.size()-1 ){
 			//take the lowest contained cell and remove all cells in the path after it.
 			for(int i =0; i<(path.size()-lowestIndex); i++){
 				path.remove(path.size());
 			}
+			}
 			
 			//add the current cell to the path
 			path.add(c);
+
 		}	
+		System.out.println("Path size: " + path.size());
 	}
 	/**
 	 * adjusts the location of the navigator backward
