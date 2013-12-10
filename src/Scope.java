@@ -45,7 +45,7 @@ public class Scope implements Behavior{
 				return true; //take control! time to feed
 		}
 		
-		else if(!crossing && cs.getColorID() == 7){ //Color.BLACK = 7
+		else if(!crossing && cs.getColorID() == 7 && !map.goal()){ //Color.BLACK = 7
 			suppressed = false; //set suppressed check to false
 			colorID = cs.getColorID();
 			return true; //
@@ -72,11 +72,12 @@ public class Scope implements Behavior{
 		if(colorID == 2){
 			System.out.println("Color is blue: " + cs.getColorID());
 			robot.travel(5); //need to change this
-//			while(colorID == 2){ //till he crosses line
+//			while(colorID == 2){ //till he crosses line d
 //				robot.forward(); 
 //			}
 			map.forward();
-			robot.stop();
+			//robot.stop();
+			crossing = false;
 		}
 		else if(colorID == 7){
 			System.out.println("Color is BLACK: " + cs.getColorID());
@@ -88,7 +89,9 @@ public class Scope implements Behavior{
 			//TODO there may be issues with the fact that map return assumes that the robot is in the center of the cell.
 			map.mazeWon();
 			suppressed = true;	//suppress is true
-			crossing = true;	// no longer eating, set to true
+			//unecessary?
+			//TODO
+			//crossing = true;	// no longer eating, set to true
 		}
 	}
 }
