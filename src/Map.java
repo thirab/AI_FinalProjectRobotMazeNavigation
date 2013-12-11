@@ -680,6 +680,18 @@ public class Map {
 		robot.stop();
 	}
 	
+	/**
+	 * checks if the robot is on the start cell. 
+	 * @return boolean wether the robot is or is not on the start cell.
+	 */
+	public boolean isOnStart(){
+		if(getCurrentCell().getX() == xStart && getCurrentCell().getY() == yStart){
+			return true;
+		}
+		return false;
+		
+	}
+	
 	
 
 }
