@@ -79,7 +79,7 @@ public class Scope implements Behavior{
 			crossing = false;
 		}
 		else if(colorID == 7){
-			System.out.println("Color is BLACK: " + cs.getColorID());
+			System.out.println("Color is BLACK and colorID is: " + colorID + " " + "and getcolorid" + cs.getColorID());
 			robot.travel(6);
 			while(robot.isMoving()){ //wait for 3 seconds
 				lejos.nxt.Sound.playSample(music);
