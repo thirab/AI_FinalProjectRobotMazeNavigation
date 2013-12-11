@@ -41,7 +41,7 @@ public class Scope implements Behavior{
 	public boolean takeControl() { 
 		//calculate difference of light
 		int lightShift = cs.getNormalizedLightValue() - cs.getLightValue();
-		//System.out.println("The light change is" + " " + lightShift); //for monitoring
+		System.out.println("The light change is" + " " + lightShift); //for monitoring
 		//if not in the middle of crossing, and new blue tape detected proceed
 		if(!crossing && cs.getColorID() == 2 && !map.goal()){ //Color.BLUE == 2
 				colorID = cs.getColorID();
