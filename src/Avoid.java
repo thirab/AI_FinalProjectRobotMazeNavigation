@@ -14,7 +14,6 @@ public class Avoid implements Behavior{
 	UltrasonicSensor us;
 	int blockInRange;
 	Map map;
-	//boolean suppressed = false; 
 
 	/**
 	 * Avoid avoids obstacles
@@ -50,6 +49,7 @@ public class Avoid implements Behavior{
 		//doesn't need to move, just report
 		//robot.travel(-30,true); // travel backwards 30 cm
 		//while(robot.isMoving()){} //do nothing until he is done backing up
+		//the robot re-orients to a position where the robot is not facing an obstacle by turning to the best direction.
 		map.obstacleFound();
 		try	{		
 			Thread.yield();	
