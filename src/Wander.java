@@ -11,7 +11,7 @@ public class Wander implements Behavior {
 	DifferentialPilot robot;
 	int upperThresh;
 	int lowerThresh;
-	double wanderDistance = 15;
+	double wanderDistance = 22;
 	Map map;
 
 	public Wander(Map m,DifferentialPilot r ) {
@@ -40,7 +40,7 @@ public class Wander implements Behavior {
 		}
 		map.wander();
 		robot.travel(wanderDistance);
-		//map.forward();
+		map.forward();
 		
 	}
 	@Override
