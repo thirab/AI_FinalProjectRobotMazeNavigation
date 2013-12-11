@@ -23,7 +23,7 @@ public class Avoid implements Behavior{
 	public Avoid (UltrasonicSensor u, Map m){
 		
 		us = u;	
-		blockInRange = 30; //block in 1 ft
+		blockInRange = 25 ; //block in 25 cm
 		map=m;
 	}
 	/**
@@ -33,7 +33,7 @@ public class Avoid implements Behavior{
 	public boolean takeControl() {
 		//System.out.println("Avoid is trying to take control, current distance is" + " "+ us.getDistance());
 		if (us.getDistance() <= blockInRange && !map.goal()){
-			System.out.println("Avoiding");
+			map.forwardCell().check();
 			//System.out.println("The distance from the wall is" + us.getDistance());
 			return true;
 		}else{
@@ -50,7 +50,9 @@ public class Avoid implements Behavior{
 		//robot.travel(-30,true); // travel backwards 30 cm
 		//while(robot.isMoving()){} //do nothing until he is done backing up
 		//the robot re-orients to a position where the robot is not facing an obstacle by turning to the best direction.
+		System.out.println("Avoiding");
 		map.obstacleFound();
+		
 		try	{		
 			Thread.yield();	
 			Thread.sleep(1000);		//	Stops	for	a	short	time	(one	second)		

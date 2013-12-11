@@ -63,29 +63,94 @@ public class Map {
 		path=new ArrayList<Cell>();
 		path.add(getCurrentCell());
 	}
+	
 	/**
-	 * impossible sets the map possibility to be solved to false, and set's the cell options to 0
+	 * instructs the navigator to wander within the map
 	 */
-	public void impossible(){
-		System.out.println("This is impossible I quit!");
-		possible=false;
-		getCurrentCell().setOptions(0);
-		robot.stop();
-		lejos.nxt.Sound.beepSequenceUp();
-		lejos.nxt.Sound.beepSequenceUp();
-		lejos.nxt.Sound.beepSequenceUp();
-		lejos.nxt.Sound.beepSequenceUp();
-		lejos.nxt.Sound.beepSequenceUp();
-		//exit the program
-		System.exit(0);
+	public void wander() {
+		if(getBest() != forwardCell()){
+		System.out.println("Facing: " + direction);
+		rotateToBestDirection();
+		}else{
+			robot.travel(cellDistance);
+		}
 	}
+
+	public Cell forwardCell() {
+		if(direction == 'n' && isValidCell(x,y+1)){
+			return theMap[x][y+1];
+		}else if(direction == 'e' && isValidCell(x+1,y)){	
+			return theMap[x+1][y];
+		}else if(direction == 's' && isValidCell(x,y-1)){	
+			return theMap[x][y-1];
+		}else 
+			return theMap[x-1][y];
+		
+	}
+
 	/**
-	 * isPossible returns wether or not the map is known to be possibly solveable
-	 * @return boolean result
+	 * rotateToBestDirection changes the navigators direction to face the optimal best cell
 	 */
-	public boolean isPossible(){
-		return possible;
+	public void rotateToBestDirection(){
+		System.out.println("Finding the best");
+		Cell best = getBest();
+		Cell current = getCurrentCell();
+		if(best!= null){
+		if(best.getX() > current.getX()){
+			System.out.println("go east");
+			faceEast();
+		}else if(best.getX() < current.getX()){
+			System.out.println("go west");
+			faceWest();
+		}else if(best.getY() > current.getY()){
+			System.out.println("Go north");
+			faceNorth();
+		}else{
+			System.out.println("go south");
+			faceSouth();
+			}
+		}else{
+			System.out.println("There are no options");
+			//impossible();
+		}
 	}
+	
+	/**
+	 * getBest returns the adjacent cell with the highest number of move options avaliable
+	 * @return the best cell
+	 */
+	public Cell getBest() {
+		Cell best = getNorthCell();
+		Cell east = getEastCell();
+		Cell south = getSouthCell();
+		Cell west = getWestCell();
+		if(best == null){
+			System.out.println("there is no north cell");
+			best = east;
+		}
+		if(best == null){
+			System.out.println("there is no east cell");
+			best = south;
+		}
+		if(best == null){
+			System.out.println("there is no south cell");
+			best = west;
+		}
+		if(best != null){
+			int value = best.optionsAvaliable();
+			if (east!= null && east.optionsAvaliable() > value) {
+				best = east;
+			} else if (west != null && west.optionsAvaliable() > value) {
+				best =west;
+			} else if (south != null && south.optionsAvaliable() > value) {
+				best = south;
+			}
+			return best;
+		}
+		System.out.println("theres something wrong, there are no moves");
+		return null;
+	}
+
 	/**
 	 * adjusts the navigator position right
 	 */
@@ -121,7 +186,8 @@ public class Map {
 	 * adjusts the navigator position forward
 	 */
 	public void forward(){	
-		System.out.println("cell forward: " + x + " : "+ y + "direction " + direction);
+		getCurrentCell().move();
+		System.out.println("I was at"+ " " + x + " : "+ y);
 		if(direction == 'n'){
 			y++;
 		}else if(direction == 'e'){
@@ -133,12 +199,15 @@ public class Map {
 		}
 		//TODO debug this, this may not be accurate. The idea is that cells that have been visited should have 1 less move option avaliable
 		Cell current = getCurrentCell();
+		System.out.println("cell forward: " + x + " : "+ y);
+				//"direction " + direction);
 		buildPath(current);
-		if(current.visited()){
-			current.move();
-		}else{
-			current.visit();
-		}
+//		if(current.visited()){
+//			current.move();
+//		}else{
+//			current.visit();
+//		}
+		current.visit();
 	}
 	
 	
@@ -293,38 +362,13 @@ public class Map {
 			handleObstacleFound(x-1,y);
 		}
 		if(getCurrentCell().optionsAvaliable()>0){
+			robot.travel(-2);
 			rotateToBestDirection();
 		}else{
 			impossible();
 		}
 	}
 	
-	/**
-	 * rotateToBestDirection changes the navigators direction to face the optimal best cell
-	 */
-	public void rotateToBestDirection(){
-		System.out.println("Finding the best");
-		Cell best = getBest();
-		Cell current = getCurrentCell();
-		if(best!= null){
-		if(best.getX() > current.getX()){
-			System.out.println("go east");
-			faceEast();
-		}else if(best.getX() < current.getX()){
-			System.out.println("go west");
-			faceWest();
-		}else if(best.getY() > current.getY()){
-			System.out.println("Go north");
-			faceNorth();
-		}else{
-			System.out.println("go south");
-			faceSouth();
-			}
-		}else{
-			System.out.println("There are no options");
-			//impossible();
-		}
-	}
 	
 	/**
 	 * handleObstacleFound at x,y co-ordinates is called when a obstacle is sensed so that other cells adjacent can also be updated. 
@@ -451,76 +495,6 @@ public class Map {
 	public boolean goal(){
 		return goalReached;
 	}
-	/**
-	 * wall Sets all cells infront of the robot to being obstacles (ex's, off the board, or wrong direction cases)
-	 * This is used when a loud sound tells the robot it is going in the wrong direction
-	 */
-	public void wall(){
-		
-		//TODO check logic
-		if(direction == 'n'){
-			
-			//set northern wall
-			for(int i=0; i<mapWidth;i++){
-				handleObstacleFound(i,y+1);
-			}
-		}else if(direction == 'e'){
-			
-			//set eastern wall
-			for(int i=0; i<mapHeight;i++){
-				handleObstacleFound(i+1,y);
-			}
-		}else if(direction == 's'){
-			
-			//set southern wall
-			for(int i=0; i<mapWidth;i++){
-				handleObstacleFound(i,y-1);
-			}
-		}else {
-			
-			//set westward wall
-			for(int i=0; i<mapHeight;i++){
-				handleObstacleFound(i-1,y);
-			}
-		}
-	}
-	
-	/**
-	 * getBest returns the adjacent cell with the highest number of move options avaliable
-	 * @return the best cell
-	 */
-	public Cell getBest() {
-		Cell best = getNorthCell();
-		Cell east = getEastCell();
-		Cell south = getSouthCell();
-		Cell west = getWestCell();
-		if(best == null){
-			System.out.println("there is no north cell");
-			best = east;
-		}
-		if(best == null){
-			System.out.println("there is no east cell");
-			best = south;
-		}
-		if(best == null){
-			System.out.println("there is no south cell");
-			best = west;
-		}
-		if(best != null){
-			int value = best.optionsAvaliable();
-			if (east!= null && east.optionsAvaliable() > value) {
-				best = east;
-			} else if (west != null && west.optionsAvaliable() > value) {
-				best =west;
-			} else if (south != null && south.optionsAvaliable() > value) {
-				best = south;
-			}
-			return best;
-		}
-		System.out.println("theres something wrong, there are no moves");
-		return null;
-	}
-	
 
 	/**
 	 * faceWest directs the navigator to face west and adjusts the map
@@ -623,7 +597,8 @@ public class Map {
 	public void SoundHeard(){
 		System.out.println("Shut up guys! You're being loud");
 		lejos.nxt.Sound.beepSequenceUp();
-		wall();
+		//PUT SOME TURN HERE. LIKE BELOW YAH thats probably fine
+		//or maybe just a manual right or something
 		rotateToBestDirection();
 	}
 	
@@ -664,22 +639,30 @@ public class Map {
 		}
 		
 	}
-
-	/**
-	 * instructs the navigator to wander within the map
-	 */
-	public void wander() {
-		System.out.println("This is my direction: " + direction);
-		rotateToBestDirection();
-	}
-
-	/**
-	 * instructs the navigator to stop
-	 */
-	public void stop() {
-		robot.stop();
-	}
 	
+	/**
+	 * impossible sets the map possibility to be solved to false, and set's the cell options to 0
+	 */
+	public void impossible(){
+		System.out.println("This is impossible I quit!");
+		possible=false;
+		getCurrentCell().setOptions(0);
+		robot.stop();
+		lejos.nxt.Sound.beepSequenceUp();
+		lejos.nxt.Sound.beepSequenceUp();
+		lejos.nxt.Sound.beepSequenceUp();
+		lejos.nxt.Sound.beepSequenceUp();
+		lejos.nxt.Sound.beepSequenceUp();
+		//exit the program
+		System.exit(0);
+	}
+	/**
+	 * isPossible returns wether or not the map is known to be possibly solveable
+	 * @return boolean result
+	 */
+	public boolean isPossible(){
+		return possible;
+	}
 	/**
 	 * checks if the robot is on the start cell. 
 	 * @return boolean wether the robot is or is not on the start cell.
@@ -692,6 +675,15 @@ public class Map {
 		
 	}
 	
-	
+	/**
+	 * instructs the navigator to stop
+	 */
+	public void stop() {
+		robot.stop();
+	}
+
+	public boolean forwardsIsChecked() {
+		return forwardCell().wasChecked();
+	}
 
 }

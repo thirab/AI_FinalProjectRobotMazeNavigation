@@ -16,10 +16,10 @@ import lejos.robotics.navigation.DifferentialPilot;
 
 public class RoboPilot {
 
-		private double trackWidth =11; //size of base, centimeters
+		private double trackWidth =11.4; //size of base, centimeters
 		private double wheelDiameter = 5.6; //size of wheel diameter, centimeters
 		private DifferentialPilot nav; //Pilot to guide robot's rotating and traversing	
-		private double cellDistance = 30; // distance to travel between cells
+		private double cellDistance = 23; // distance to travel between cells
 		private Map map; // the map that the pilot navigates by
 		
 		

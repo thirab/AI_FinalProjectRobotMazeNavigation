@@ -9,14 +9,10 @@ import lejos.robotics.subsumption.Behavior;
 public class Wander implements Behavior {
 
 	DifferentialPilot robot;
-	int upperThresh;
-	int lowerThresh;
-	double wanderDistance = 22;
+	double wanderDistance = 23;
 	Map map;
 
 	public Wander(Map m,DifferentialPilot r ) {
-		upperThresh = 90;
-		lowerThresh = 10;
 		map = m;
 		robot = r;
 	}
@@ -33,13 +29,19 @@ public class Wander implements Behavior {
 
 	@Override
 	public void action() {
+		
+		if(!map.forwardsIsChecked()){
+		robot.travel(5);
+		map.forwardCell().check();
+		}
 		try {
 			Thread.yield();
 			Thread.sleep(2000);
 		} catch (InterruptedException ie) {
 		}
+		robot.travel(-5);
 		map.wander();
-		robot.travel(wanderDistance);
+		//robot.travel(wanderDistance);
 		map.forward();
 		
 	}

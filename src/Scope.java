@@ -42,7 +42,7 @@ public class Scope implements Behavior{
 		//calculate difference of light
 		int lightShift = cs.getLightValue();
 		//System.out.println("The light change is" + " " + lightShift); //for monitoring
-		if(lightShift >= 205){//upperthreshold for light value
+		if(lightShift >= 200){//upperthreshold for light value
 			callShift = lightShift;
 			suppressed = false; //set suppressed check to false
 			return true; //take control! time to feed
@@ -71,7 +71,7 @@ public class Scope implements Behavior{
 		
 		//TODO this is not being called again after it is called once
 		//set eating to true so arbitrator cannot call takeControl again on food source
-//		crossing = true;
+		crossing = true;
 //		if(colorID == 2){
 //			System.out.println("Color is blue: " + cs.getColorID());
 //			robot.travel(15); //need to change this
@@ -91,6 +91,6 @@ public class Scope implements Behavior{
 			map.mazeWon();
 			suppressed = true;	//suppress is true
 	//	}
-	//	crossing = false;
+		crossing = false;
 	}
 }

@@ -117,6 +117,9 @@ public class Cell {
 	 * @return the number of valid moves avaliable
 	 */
 	public int optionsAvaliable(){
+		if(barrier){
+			return 0;
+		}
 		return options;
 	}
 
