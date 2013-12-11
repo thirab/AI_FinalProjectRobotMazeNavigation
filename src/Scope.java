@@ -29,7 +29,6 @@ public class Scope implements Behavior{
 		map = m;
 		cs.setFloodlight(Color.WHITE);
 		suppressed = true; //initially surpressed
-		crossing = false; //initially no eating
 		colorID = 0; 
 	}
 
@@ -39,13 +38,8 @@ public class Scope implements Behavior{
 	@Override
 	public boolean takeControl() { 
 		//if not in the middle of crossing, and new blue tape detected proceed
-		if(!crossing && cs.getColorID() == 2 && !map.goal()){ //Color.BLUE == 2
-				colorID = cs.getColorID();
-				suppressed = false; //set suppressed check to false
-				return true; //take control! time to feed
-		}
 		
-		else if(!crossing && cs.getColorID() == 7 && !map.goal()){ //Color.BLACK = 7
+		if(cs.getColorID() == 7 && !map.goal()){ //Color.BLACK = 7
 			suppressed = false; //set suppressed check to false
 			colorID = cs.getColorID();
 			return true; //
@@ -68,18 +62,18 @@ public class Scope implements Behavior{
 		
 		//TODO this is not being called again after it is called once
 		//set eating to true so arbitrator cannot call takeControl again on food source
-		crossing = true;
-		if(colorID == 2){
-			System.out.println("Color is blue: " + cs.getColorID());
-			robot.travel(15); //need to change this
-//			while(colorID == 2){ //till he crosses line d
-//				robot.forward(); 
-//			}
-			map.forward();
-			crossing = false;
-		}
-		else if(colorID == 7){
-			System.out.println("Color is BLACK: " + cs.getColorID());
+//		if(colorID == 2){
+//			System.out.println("Color is blue: " + cs.getColorID());
+//			robot.travel(15); //need to change this
+////			while(colorID == 2){ //till he crosses line d
+////				robot.forward(); 
+////			}
+//			map.forward();
+//			crossing = false;
+//		}
+		//else
+		//	if(colorID == 7){
+			System.out.println("Color is Black: " + cs.getColorID());
 			robot.travel(6);
 			while(robot.isMoving()){ //wait for 3 seconds
 				lejos.nxt.Sound.playSample(music);
@@ -91,6 +85,6 @@ public class Scope implements Behavior{
 			//unecessary?
 			//TODO
 			//crossing = true;	// no longer eating, set to true
-		}
+	//	}
 	}
 }

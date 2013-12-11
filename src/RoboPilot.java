@@ -57,7 +57,6 @@ public class RoboPilot {
 			
 			b1 = new Wander(map, nav);
 			b2 = new Avoid(us,map);
-			//b4 = new Feed(ls,map);
 			
 			//TODO test sound sensor it currently creates a barrier wall (implying that the robot is heading in the wrong direction)
 			//This can easily be altered to turns etc... 
@@ -67,10 +66,8 @@ public class RoboPilot {
 			
 			//testing without sonic sensor
 			bArray = new Behavior[] {b1,b2, b3};
-			
-			
-			//testing without scope
-			//bArray = new Behavior[] {b1,b2};
+
+			//create new arbitrator of the Array of behaviors
 			arby = new Arbitrator(bArray);
 		}
 		

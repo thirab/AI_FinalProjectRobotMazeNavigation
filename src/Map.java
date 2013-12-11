@@ -316,10 +316,10 @@ public class Map {
 		}else if(best.getY() > current.getY()){
 			System.out.println("Go north");
 			faceNorth();
-		}else if(best.getY() < current.getY()){
+		}else{
 			System.out.println("go south");
 			faceSouth();
-		}
+			}
 		}else{
 			System.out.println("There are no options");
 			//impossible();
@@ -459,23 +459,29 @@ public class Map {
 		
 		//TODO check logic
 		if(direction == 'n'){
+			
+			//set northern wall
 			for(int i=0; i<mapWidth;i++){
-				theMap[i][y+1].setObstacle();
+				handleObstacleFound(i,y+1);
 			}
 		}else if(direction == 'e'){
+			
+			//set eastern wall
 			for(int i=0; i<mapHeight;i++){
-				theMap[x+1][i].setObstacle();
+				handleObstacleFound(i+1,y);
 			}
 		}else if(direction == 's'){
+			
+			//set southern wall
 			for(int i=0; i<mapWidth;i++){
-				theMap[i][y-1].setObstacle();
+				handleObstacleFound(i,y-1);
 			}
-		}else if(direction == 'w'){
+		}else {
+			
+			//set westward wall
 			for(int i=0; i<mapHeight;i++){
-				theMap[x-1][i].setObstacle();
+				handleObstacleFound(i-1,y);
 			}
-		}else{
-			System.out.println("error there is no direction");
 		}
 	}
 	
@@ -520,6 +526,7 @@ public class Map {
 	 * faceWest directs the navigator to face west and adjusts the map
 	 */
 	public void faceWest() {
+		System.out.println("Face west");
 		if (getDirection() == 'n') {
 			turnLeft();
 			robot.rotate(90);
@@ -538,6 +545,7 @@ public class Map {
 	 * faceEast directs the navigator to face east and adjusts the map
 	 */
 	public void faceEast() {
+		System.out.println("Face east");
 		if (getDirection() == 'n') {
 			turnRight();
 			robot.rotate(-90);
@@ -557,6 +565,7 @@ public class Map {
 	 * faceNorth directs the navigator to face north and adjusts the map
 	 */
 	public void faceNorth() {
+		System.out.println("Face north");
 		if (getDirection() == 'w') {
 			turnRight();
 			robot.rotate(-90);
@@ -575,6 +584,7 @@ public class Map {
 	 * faceSouth directs the navigator to face south and adjusts the map
 	 */
 	public void faceSouth() {
+		System.out.println("Face south");
 		if (getDirection() == 'n') {
 			turnRight();
 			robot.rotate(-90);
@@ -661,13 +671,6 @@ public class Map {
 	public void wander() {
 		System.out.println("This is my direction: " + direction);
 		rotateToBestDirection();
-//		if(forwardIsValid()){
-////			moved to wander / bordercross respectively
-////			forward();
-////			robot.travel(cellDistance);
-//		}else{
-//			rotateToBestDirection();
-//		}
 	}
 
 	/**
