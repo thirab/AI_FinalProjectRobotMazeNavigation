@@ -121,7 +121,7 @@ public class Map {
 	 * adjusts the navigator position forward
 	 */
 	public void forward(){	
-		System.out.println("cell forward");
+		System.out.println("cell forward: " + x + " : "+ y);
 		if(direction == 'n'){
 			y++;
 		}else if(direction == 'e'){
