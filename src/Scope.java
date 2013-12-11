@@ -40,19 +40,18 @@ public class Scope implements Behavior{
 	@Override
 	public boolean takeControl() { 
 		//calculate difference of light
-		int lightShift = cs.getNormalizedLightValue() - cs.getLightValue();
+		int lightShift = cs.getLightValue();
 		System.out.println("The light change is" + " " + lightShift); //for monitoring
-		//if not in the middle of crossing, and new blue tape detected proceed
-		if(!crossing && cs.getColorID() == 2 && !map.goal()){ //Color.BLUE == 2
-				colorID = cs.getColorID();
-				suppressed = false; //set suppressed check to false
-				return true; //take control! time to feed
-		}
-		
-		else if(!crossing&&lightShift >= 480){//upperthreshold for light value
+		if(!crossing&&lightShift >= 205){//upperthreshold for light value
 			callShift = lightShift;
 			suppressed = false; //set suppressed check to false
 			return true; //take control! time to feed
+		}
+		//if not in the middle of crossing, and new blue tape detected proceed
+		else if(!crossing && cs.getColorID() == 2 && !map.goal()){ //Color.BLUE == 2
+				colorID = cs.getColorID();
+				suppressed = false; //set suppressed check to false
+				return true; //take control! time to feed
 		}
 		else{
 			return false; //supress
@@ -81,7 +80,7 @@ public class Scope implements Behavior{
 //			}
 			map.forward();
 		}
-		else if(callShift >= 480 ){
+		else if(callShift >= 205 ){
 			System.out.println("Found white spot" + callShift);
 			robot.travel(6);
 			while(robot.isMoving()){ //wait for 3 seconds
