@@ -41,7 +41,7 @@ public class Scope implements Behavior{
 	public boolean takeControl() { 
 		//calculate difference of light
 		int lightShift = cs.getLightValue();
-		System.out.println("The light change is" + " " + lightShift); //for monitoring
+		//System.out.println("The light change is" + " " + lightShift); //for monitoring
 		if(!crossing&&lightShift >= 205){//upperthreshold for light value
 			callShift = lightShift;
 			suppressed = false; //set suppressed check to false
