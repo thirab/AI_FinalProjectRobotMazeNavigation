@@ -21,6 +21,7 @@ public class Scope implements Behavior{
 	int colorID; 
 	Map map;
 	double cellDistance;
+	int callShift;
 	
 	public Scope (DifferentialPilot p, ColorSensor l, Map m){
 
@@ -38,6 +39,9 @@ public class Scope implements Behavior{
 	 */
 	@Override
 	public boolean takeControl() { 
+		//calculate difference of light
+		int lightShift = cs.getNormalizedLightValue() - cs.getLightValue();
+		//System.out.println("The light change is" + " " + lightShift); //for monitoring
 		//if not in the middle of crossing, and new blue tape detected proceed
 		if(!crossing && cs.getColorID() == 2 && !map.goal()){ //Color.BLUE == 2
 				colorID = cs.getColorID();
@@ -45,10 +49,10 @@ public class Scope implements Behavior{
 				return true; //take control! time to feed
 		}
 		
-		else if(!crossing && cs.getColorID() == 7 && !map.goal()){ //Color.BLACK = 7
+		else if(!crossing&&lightShift >= 480){//upperthreshold for light value
+			callShift = lightShift;
 			suppressed = false; //set suppressed check to false
-			colorID = cs.getColorID();
-			return true; //
+			return true; //take control! time to feed
 		}
 		else{
 			return false; //supress
@@ -76,10 +80,9 @@ public class Scope implements Behavior{
 //				robot.forward(); 
 //			}
 			map.forward();
-			crossing = false;
 		}
-		else if(colorID == 7){
-			System.out.println("Color is BLACK and colorID is: " + colorID + " " + "and getcolorid" + cs.getColorID());
+		else if(callShift >= 480 ){
+			System.out.println("Found white spot" + callShift);
 			robot.travel(6);
 			while(robot.isMoving()){ //wait for 3 seconds
 				lejos.nxt.Sound.playSample(music);
@@ -88,9 +91,7 @@ public class Scope implements Behavior{
 			//TODO there may be issues with the fact that map return assumes that the robot is in the center of the cell.
 			map.mazeWon();
 			suppressed = true;	//suppress is true
-			//unecessary?
-			//TODO
-			//crossing = true;	// no longer eating, set to true
 		}
+		crossing = false;
 	}
 }
