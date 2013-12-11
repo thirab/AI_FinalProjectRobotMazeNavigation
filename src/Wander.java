@@ -40,6 +40,7 @@ public class Wander implements Behavior {
 		}
 		map.wander();
 		robot.travel(wanderDistance);
+		map.forward();
 		
 	}
 	@Override
