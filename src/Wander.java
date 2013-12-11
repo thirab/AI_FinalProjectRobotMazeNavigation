@@ -36,31 +36,7 @@ public class Wander implements Behavior {
 		map.wander();
 	}
 
-	//
-	// public void findValidDirection(){
-	// if(map.rightIsValid()){
-	// map.turnRight();
-	// robot.rotate(90);
-	// map.forward();
-	// robot.travel(cellDistance);
-	// }else if(map.leftIsValid()){
-	// map.turnLeft();
-	// robot.rotate(-90);
-	// map.forward();
-	// robot.travel(cellDistance);
-	// }else if(map.backIsValid()){
-	// map.turnRight();
-	// robot.rotate(90);
-	// map.turnRight();
-	// robot.rotate(90);
-	// map.forward();
-	// robot.travel(cellDistance);
-	// }else{
-	// map.impossible();
-	// }
-	// }
 
-	
 
 	@Override
 	public void suppress() {
