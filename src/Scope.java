@@ -34,12 +34,13 @@ public class Scope implements Behavior{
 
 	/**
 	 * The robot feeds when a white spot is found below it's sensor.
+	 * It is assumed that the robot cannot feed on the cell it starts on. (This cell cannot be the finish)
 	 */
 	@Override
 	public boolean takeControl() { 
 		//if not in the middle of crossing, and new blue tape detected proceed
 		
-		if(cs.getColorID() == 7 && !map.goal()){ //Color.BLACK = 7
+		if(cs.getColorID() == 7 && !map.goal() && !map.isOnStart()){ //Color.BLACK = 7
 			suppressed = false; //set suppressed check to false
 			colorID = cs.getColorID();
 			return true; //
