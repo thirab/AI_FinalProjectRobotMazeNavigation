@@ -55,7 +55,7 @@ public class RoboPilot {
 			
 			map = new Map(nav, cellDistance);
 			
-			b1 = new Wander(map, nav);
+			b1 = new Wander(us,map, nav);
 			b2 = new Avoid(us,map);
 			
 			//TODO test sound sensor it currently creates a barrier wall (implying that the robot is heading in the wrong direction)

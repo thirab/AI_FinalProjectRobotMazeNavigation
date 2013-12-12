@@ -26,7 +26,8 @@ public class Map {
 	private boolean possible = true;
 	private DifferentialPilot robot;
 	private double cellDistance;
-	private ArrayList<Cell> path;
+	private ArrayList<Cell> path;	
+	private boolean isMoving = false;
 	
 
 	/**
@@ -38,7 +39,6 @@ public class Map {
 		//set global variables
 		robot = p;
 		cellDistance=c;
-		
 		//create a new map made out of cells
 		for(int i=0; i<mapWidth;i++){
 			for(int j=0; j<mapHeight; j++){
@@ -68,31 +68,15 @@ public class Map {
 	 * instructs the navigator to wander within the map
 	 */
 	public void wander() {
-		if(getBest() != forwardCell()){
-		System.out.println("Facing: " + direction);
+		//System.out.println("Facing: " + direction);
 		rotateToBestDirection();
-		}else{
-			robot.travel(cellDistance);
-		}
-	}
-
-	public Cell forwardCell() {
-		if(direction == 'n' && isValidCell(x,y+1)){
-			return theMap[x][y+1];
-		}else if(direction == 'e' && isValidCell(x+1,y)){	
-			return theMap[x+1][y];
-		}else if(direction == 's' && isValidCell(x,y-1)){	
-			return theMap[x][y-1];
-		}else 
-			return theMap[x-1][y];
-		
 	}
 
 	/**
 	 * rotateToBestDirection changes the navigators direction to face the optimal best cell
 	 */
 	public void rotateToBestDirection(){
-		System.out.println("Finding the best");
+		//System.out.println("Finding the best");
 		Cell best = getBest();
 		Cell current = getCurrentCell();
 		if(best!= null){
@@ -187,7 +171,7 @@ public class Map {
 	 */
 	public void forward(){	
 		getCurrentCell().move();
-		System.out.println("I was at"+ " " + x + " : "+ y);
+		System.out.println("I was at"+ " " + x + " , "+ y);
 		if(direction == 'n'){
 			y++;
 		}else if(direction == 'e'){
@@ -199,7 +183,7 @@ public class Map {
 		}
 		//TODO debug this, this may not be accurate. The idea is that cells that have been visited should have 1 less move option avaliable
 		Cell current = getCurrentCell();
-		System.out.println("cell forward: " + x + " : "+ y);
+		System.out.println("going to" + x + " : "+ y);
 				//"direction " + direction);
 		buildPath(current);
 //		if(current.visited()){
@@ -376,21 +360,21 @@ public class Map {
 	 * @param yC co-ordinates
 	 */
 	public void handleObstacleFound(int xC, int yC){
-		System.out.println("Handing the obstacle like a boss");
+		System.out.println("Obstalce at" + " " + xC + "," + yC);
 		if(!theMap[xC][yC].isObstacle()){
 		theMap[xC][yC].setObstacle();
-		if(xC >0){
-		theMap[xC-1][yC].move();
-		}
-		if(xC<mapWidth -1){
-		theMap[xC+1][yC].move();
-		}
-		if(yC>0){
-		theMap[xC][yC-1].move();
-		}
-		if(yC<mapHeight-1){
-		theMap[xC][yC+1].move();
-		}
+			if(xC >0){
+				theMap[xC-1][yC].move();
+			}
+			if(xC<mapWidth -1){
+				theMap[xC+1][yC].move();
+			}
+			if(yC>0){
+				theMap[xC][yC-1].move();
+			}
+			if(yC<mapHeight-1){
+				theMap[xC][yC+1].move();
+			}
 		}
 	}
 	
@@ -681,9 +665,18 @@ public class Map {
 	public void stop() {
 		robot.stop();
 	}
-
-	public boolean forwardsIsChecked() {
-		return forwardCell().wasChecked();
+	
+	public void moving(){
+		isMoving=true;
 	}
+	
+	public void stopMoving(){
+		isMoving=false;
+	}
+	
+	public boolean checkMoving(){
+		return isMoving;
+	}
+
 
 }
