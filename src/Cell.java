@@ -1,4 +1,9 @@
 
+/**
+ * 
+ * @author tai-lanhirabayashi & Jackie
+ *
+ */
 public class Cell {
 	private int x;
 	private int y;
@@ -6,6 +11,7 @@ public class Cell {
 	private boolean visited = false;
 	private int options = 4;
 	private boolean path= false;
+	private boolean checked = false;
 	
 	/**
 	 * Cell creates a new cell value with x,y cordinates.
@@ -17,10 +23,16 @@ public class Cell {
 		y=yCord;
 	}
 	
+	/**
+	 * Set's the cell to being on the robots path
+	 */
 	public void onPath(){
 		path = true;
 	}
 	
+	/**
+	 * Set's the robot to no longer being on the path
+	 */
 	public void offPath(){
 		path=false;
 	}
@@ -50,6 +62,20 @@ public class Cell {
 		options = o;
 	}
 	
+	/**
+	 * wasChecked returns the boolean answer to wether or not the cell has been checked to be an obstacle
+	 * @return boolean if the cell is an obstacle
+	 */
+	public boolean wasChecked(){
+		return checked;
+	}
+	
+	/**
+	 * Set the cell to having been checked
+	 */
+	public void check(){
+		checked = true;
+	}
 	/**
 	 * visit set's the cell to having been visited. 
 	 */
@@ -91,6 +117,9 @@ public class Cell {
 	 * @return the number of valid moves avaliable
 	 */
 	public int optionsAvaliable(){
+		if(barrier){
+			return 0;
+		}
 		return options;
 	}
 
