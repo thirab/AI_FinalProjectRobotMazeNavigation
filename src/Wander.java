@@ -56,17 +56,12 @@ public class Wander implements Behavior {
 		map.wander();
 		//if(!map.isBlocked){
 		System.out.println("I'm calling forward!");
-			//moved actual movement to the map.
-			//robot.travel(wanderDistance);
+			map.forward();
+			robot.travel(wanderDistance);
 			//map.setCheck(false);
 		//}
 		wandering = false;
 		map.stopMoving();
-		try {
-			Thread.yield();
-			Thread.sleep(2000);
-		} catch (InterruptedException ie) {
-		}
 		
 	}
 <<<<<<< HEAD

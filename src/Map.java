@@ -26,7 +26,7 @@ public class Map {
 	private boolean possible = true;
 	private DifferentialPilot robot;
 	private double cellDistance;
-	private Stack<Cell> path;	
+	private ArrayList<Cell> path;	
 	private boolean isMoving = false;
 	
 
@@ -65,9 +65,14 @@ public class Map {
 		path.add(getCurrentCell());
 =======
 		theMap[xStart][yStart].visit();
+<<<<<<< HEAD
 		path=new Stack<Cell>();
 		path.push(getCurrentCell());
 >>>>>>> e0adf0a9abc1e16640325cc0b75731facbe83c4b
+=======
+		path=new ArrayList<Cell>();
+		path.add(getCurrentCell());
+>>>>>>> parent of d4ca7a3... WE DID IT
 	}
 	
 	/**
@@ -85,13 +90,8 @@ public class Map {
 		System.exit(0);
 =======
 	public void wander() {
-		if(getBest()!=getForward()){
-			rotateToBestDirection();
-		}else{
-			robot.travel(cellDistance);
-			forward();
-		}
 		//System.out.println("Facing: " + direction);
+<<<<<<< HEAD
 		
 	}
 
@@ -109,6 +109,9 @@ public class Map {
 >>>>>>> 69fb029410704742586999c92ef238ee3136cc3a
 =======
 >>>>>>> e0adf0a9abc1e16640325cc0b75731facbe83c4b
+=======
+		rotateToBestDirection();
+>>>>>>> parent of d4ca7a3... WE DID IT
 	}
 
 	/**
@@ -163,15 +166,10 @@ public class Map {
 			int value = best.optionsAvaliable();
 			if (east!= null && east.optionsAvaliable() > value) {
 				best = east;
-				value=best.optionsAvaliable();
-			}
-			if (west != null && west.optionsAvaliable() > value) {
+			} else if (west != null && west.optionsAvaliable() > value) {
 				best =west;
-				value=best.optionsAvaliable();
-			}
-			if (south != null && south.optionsAvaliable() > value) {
+			} else if (south != null && south.optionsAvaliable() > value) {
 				best = south;
-				value=best.optionsAvaliable();
 			}
 			return best;
 		}
@@ -238,20 +236,6 @@ public class Map {
 //			current.visit();
 //		}
 		current.visit();
-	}
-	
-	public void returnHome(){
-		getCurrentCell().move();
-		System.out.println("I was at"+ " " + x + " , "+ y);
-		if(direction == 'n'){
-			y++;
-		}else if(direction == 'e'){
-			x++;
-		}else if(direction == 's'){
-			y--;
-		}else if(direction == 'w'){
-			x--;
-		}
 	}
 	
 	
@@ -364,11 +348,15 @@ public class Map {
 //			
 //			//add the current cell to the path
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 69fb029410704742586999c92ef238ee3136cc3a
 			path.add(c);
 =======
 			path.push(c);
 >>>>>>> e0adf0a9abc1e16640325cc0b75731facbe83c4b
+=======
+			path.add(c);
+>>>>>>> parent of d4ca7a3... WE DID IT
 
 //		}	
 //		System.out.println("Path size: " + path.size());
@@ -730,10 +718,10 @@ public class Map {
 		lejos.nxt.Sound.beepSequenceUp();
 		xGoal=x;
 		yGoal=y;
-//		
-//		//TODO currently erroring out
-//		//moveBack();
-//		stop();
+		
+		//TODO currently erroring out
+		//moveBack();
+		stop();
 	}
 	
 	/**
@@ -744,7 +732,7 @@ public class Map {
 		lejos.nxt.Sound.beepSequenceUp();
 		//PUT SOME TURN HERE. LIKE BELOW YAH thats probably fine
 		//or maybe just a manual right or something
-		robot.rotate(-90);
+		rotateToBestDirection();
 	}
 	
 	/**
@@ -757,31 +745,29 @@ public class Map {
 		if(path == null){
 			System.out.println("There is no path left");
 		}else{
-			while(path.size()>1){
-			System.out.println("About to get the current cell");
-			Cell current = (Cell) path.pop();
-			System.out.println("My x current " + " " + current.getX() + " " + "my y" + " " + current.getY() );
-			Cell future = (Cell) path.peek();
-			System.out.println("My x future " + " " + future.getX() + " " + "my y" + " " + future.getY());
+			while(path.size()>=1){
+		
+			Cell current = (Cell) path.remove(path.size());
+			Cell future = (Cell) path.get(path.size());
 			if(current.getX()>future.getX()){
 				faceWest();
-				returnHome();
+				forward();
 				robot.travel(cellDistance);
 			}else if(current.getX()<future.getX()){
 				faceEast();
-				returnHome();
+				forward();
 				robot.travel(cellDistance);
-			}else if(current.getY() > future.getY()){
+			}else if(current.getY() > future.getX()){
 				faceSouth();
-				returnHome();
+				forward();
 				robot.travel(cellDistance);
-			}else  if(current.getY() < future.getY()){
+			}else  if(current.getY() < future.getX()){
 				faceNorth();
-				returnHome();
+				forward();
 				robot.travel(cellDistance);
 			}
 		}
-			//stop();
+			stop();
 			System.out.println("Maze solved");
 		}
 		
