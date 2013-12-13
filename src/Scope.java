@@ -32,6 +32,7 @@ public class Scope implements Behavior{
 		suppressed = true; //initially surpressed
 		crossing = false; //initially no eating
 		colorID = 0; 
+		
 	}
 
 	/**
@@ -42,7 +43,8 @@ public class Scope implements Behavior{
 		//calculate difference of light
 		int lightShift = cs.getLightValue();
 		//System.out.println("The light change is" + " " + lightShift); //for monitoring
-		if(lightShift >= 200){//upperthreshold for light value
+		if(lightShift >= 200 && !map.goal()){//upperthreshold for light value
+			System.out.println("Maze found white!");
 			callShift = lightShift;
 			suppressed = false; //set suppressed check to false
 			return true; //take control! time to feed
@@ -69,6 +71,7 @@ public class Scope implements Behavior{
 	@Override
 	public void action() {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		//set crossing to true so arbitrator cannot call takeControl again on line source
 		crossing = true;
 		if(colorID == 2){
@@ -82,9 +85,11 @@ public class Scope implements Behavior{
 		else if(colorID == 6){
 =======
 		
+=======
+		map.mazeWon();
+>>>>>>> e0adf0a9abc1e16640325cc0b75731facbe83c4b
 		//TODO this is not being called again after it is called once
 		//set eating to true so arbitrator cannot call takeControl again on food source
-		crossing = true;
 //		if(colorID == 2){
 //			System.out.println("Color is blue: " + cs.getColorID());
 //			robot.travel(15); //need to change this
@@ -95,14 +100,19 @@ public class Scope implements Behavior{
 //		}
 		//else if(callShift >= 205 ){
 			System.out.println("Found white spot" + callShift);
+<<<<<<< HEAD
 >>>>>>> 69fb029410704742586999c92ef238ee3136cc3a
+=======
+//			robot.travel(6);
+//			while(robot.isMoving()){ //wait for 3 seconds
+//				lejos.nxt.Sound.playSample(music);
+//			}
+>>>>>>> e0adf0a9abc1e16640325cc0b75731facbe83c4b
 			robot.travel(6);
-			while(robot.isMoving()){ //wait for 3 seconds
-				lejos.nxt.Sound.playSample(music);
-			}
-			lejos.nxt.Sound.beepSequenceUp();
+			//lejos.nxt.Sound.beepSequenceUp();
 			//TODO there may be issues with the fact that map return assumes that the robot is in the center of the cell.
-			map.mazeWon();
+			System.out.println("Begining to move back");
+			map.moveBack();
 			suppressed = true;	//suppress is true
 	//	}
 		crossing = false;

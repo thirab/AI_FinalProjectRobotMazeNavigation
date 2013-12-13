@@ -26,7 +26,8 @@ public class Map {
 	private boolean possible = true;
 	private DifferentialPilot robot;
 	private double cellDistance;
-	private ArrayList<Cell> path;
+	private Stack<Cell> path;	
+	private boolean isMoving = false;
 	
 
 	/**
@@ -38,7 +39,6 @@ public class Map {
 		//set global variables
 		robot = p;
 		cellDistance=c;
-		
 		//create a new map made out of cells
 		for(int i=0; i<mapWidth;i++){
 			for(int j=0; j<mapHeight; j++){
@@ -59,9 +59,15 @@ public class Map {
 			theMap[mapWidth-1][j].setObstacle();
 			theMap[mapWidth-2][j].move();
 		}
+<<<<<<< HEAD
 		theMap[xStart][yStart].visit(); //would we need to set options here? what if there were two directions from start cell
 		path=new ArrayList<Cell>();
 		path.add(getCurrentCell());
+=======
+		theMap[xStart][yStart].visit();
+		path=new Stack<Cell>();
+		path.push(getCurrentCell());
+>>>>>>> e0adf0a9abc1e16640325cc0b75731facbe83c4b
 	}
 	
 	/**
@@ -79,32 +85,37 @@ public class Map {
 		System.exit(0);
 =======
 	public void wander() {
-		if(getBest() != forwardCell()){
-		System.out.println("Facing: " + direction);
-		rotateToBestDirection();
+		if(getBest()!=getForward()){
+			rotateToBestDirection();
 		}else{
 			robot.travel(cellDistance);
+			forward();
 		}
+		//System.out.println("Facing: " + direction);
+		
 	}
 
-	public Cell forwardCell() {
-		if(direction == 'n' && isValidCell(x,y+1)){
+	private Cell getForward() {
+		if(direction == 'n'){
 			return theMap[x][y+1];
-		}else if(direction == 'e' && isValidCell(x+1,y)){	
+		}else if(direction == 'e'){
 			return theMap[x+1][y];
-		}else if(direction == 's' && isValidCell(x,y-1)){	
+		}else if(direction == 's'){
 			return theMap[x][y-1];
-		}else 
+		}
 			return theMap[x-1][y];
+<<<<<<< HEAD
 		
 >>>>>>> 69fb029410704742586999c92ef238ee3136cc3a
+=======
+>>>>>>> e0adf0a9abc1e16640325cc0b75731facbe83c4b
 	}
 
 	/**
 	 * rotateToBestDirection changes the navigators direction to face the optimal best cell
 	 */
 	public void rotateToBestDirection(){
-		System.out.println("Finding the best");
+		//System.out.println("Finding the best");
 		Cell best = getBest();
 		Cell current = getCurrentCell();
 		if(best!= null){
@@ -152,10 +163,15 @@ public class Map {
 			int value = best.optionsAvaliable();
 			if (east!= null && east.optionsAvaliable() > value) {
 				best = east;
-			} else if (west != null && west.optionsAvaliable() > value) {
+				value=best.optionsAvaliable();
+			}
+			if (west != null && west.optionsAvaliable() > value) {
 				best =west;
-			} else if (south != null && south.optionsAvaliable() > value) {
+				value=best.optionsAvaliable();
+			}
+			if (south != null && south.optionsAvaliable() > value) {
 				best = south;
+				value=best.optionsAvaliable();
 			}
 			return best;
 		}
@@ -199,7 +215,7 @@ public class Map {
 	 */
 	public void forward(){	
 		getCurrentCell().move();
-		System.out.println("I was at"+ " " + x + " : "+ y);
+		System.out.println("I was at"+ " " + x + " , "+ y);
 		if(direction == 'n'){
 			y++;
 		}else if(direction == 'e'){
@@ -213,7 +229,7 @@ public class Map {
 		//move options depend on barriers, so cells shouldnt automatically start with 4. will fix
 		//
 		Cell current = getCurrentCell();
-		System.out.println("cell forward: " + x + " : "+ y);
+		System.out.println("going to" + x + " : "+ y);
 				//"direction " + direction);
 		buildPath(current);
 //		if(current.visited()){
@@ -222,6 +238,20 @@ public class Map {
 //			current.visit();
 //		}
 		current.visit();
+	}
+	
+	public void returnHome(){
+		getCurrentCell().move();
+		System.out.println("I was at"+ " " + x + " , "+ y);
+		if(direction == 'n'){
+			y++;
+		}else if(direction == 'e'){
+			x++;
+		}else if(direction == 's'){
+			y--;
+		}else if(direction == 'w'){
+			x--;
+		}
 	}
 	
 	
@@ -333,8 +363,12 @@ public class Map {
 //			}
 //			
 //			//add the current cell to the path
+<<<<<<< HEAD
 >>>>>>> 69fb029410704742586999c92ef238ee3136cc3a
 			path.add(c);
+=======
+			path.push(c);
+>>>>>>> e0adf0a9abc1e16640325cc0b75731facbe83c4b
 
 //		}	
 //		System.out.println("Path size: " + path.size());
@@ -439,21 +473,21 @@ public class Map {
 	 * @param yC co-ordinates
 	 */
 	public void handleObstacleFound(int xC, int yC){
-		System.out.println("Handing the obstacle like a boss");
+		System.out.println("Obstalce at" + " " + xC + "," + yC);
 		if(!theMap[xC][yC].isObstacle()){
 		theMap[xC][yC].setObstacle();
-		if(xC >0){
-		theMap[xC-1][yC].move();
-		}
-		if(xC<mapWidth -1){
-		theMap[xC+1][yC].move();
-		}
-		if(yC>0){
-		theMap[xC][yC-1].move();
-		}
-		if(yC<mapHeight-1){
-		theMap[xC][yC+1].move();
-		}
+			if(xC >0){
+				theMap[xC-1][yC].move();
+			}
+			if(xC<mapWidth -1){
+				theMap[xC+1][yC].move();
+			}
+			if(yC>0){
+				theMap[xC][yC-1].move();
+			}
+			if(yC<mapHeight-1){
+				theMap[xC][yC+1].move();
+			}
 		}
 	}
 	
@@ -696,10 +730,10 @@ public class Map {
 		lejos.nxt.Sound.beepSequenceUp();
 		xGoal=x;
 		yGoal=y;
-		
-		//TODO currently erroring out
-		//moveBack();
-		stop();
+//		
+//		//TODO currently erroring out
+//		//moveBack();
+//		stop();
 	}
 	
 	/**
@@ -710,7 +744,7 @@ public class Map {
 		lejos.nxt.Sound.beepSequenceUp();
 		//PUT SOME TURN HERE. LIKE BELOW YAH thats probably fine
 		//or maybe just a manual right or something
-		rotateToBestDirection();
+		robot.rotate(-90);
 	}
 	
 	/**
@@ -723,29 +757,31 @@ public class Map {
 		if(path == null){
 			System.out.println("There is no path left");
 		}else{
-			while(path.size()>=1){
-		
-			Cell current = (Cell) path.remove(path.size());
-			Cell future = (Cell) path.get(path.size());
+			while(path.size()>1){
+			System.out.println("About to get the current cell");
+			Cell current = (Cell) path.pop();
+			System.out.println("My x current " + " " + current.getX() + " " + "my y" + " " + current.getY() );
+			Cell future = (Cell) path.peek();
+			System.out.println("My x future " + " " + future.getX() + " " + "my y" + " " + future.getY());
 			if(current.getX()>future.getX()){
 				faceWest();
-				forward();
+				returnHome();
 				robot.travel(cellDistance);
 			}else if(current.getX()<future.getX()){
 				faceEast();
-				forward();
+				returnHome();
 				robot.travel(cellDistance);
-			}else if(current.getY() > future.getX()){
+			}else if(current.getY() > future.getY()){
 				faceSouth();
-				forward();
+				returnHome();
 				robot.travel(cellDistance);
-			}else  if(current.getY() < future.getX()){
+			}else  if(current.getY() < future.getY()){
 				faceNorth();
-				forward();
+				returnHome();
 				robot.travel(cellDistance);
 			}
 		}
-			stop();
+			//stop();
 			System.out.println("Maze solved");
 		}
 		
@@ -802,9 +838,18 @@ public class Map {
 	public void stop() {
 		robot.stop();
 	}
-
-	public boolean forwardsIsChecked() {
-		return forwardCell().wasChecked();
+	
+	public void moving(){
+		isMoving=true;
 	}
+	
+	public void stopMoving(){
+		isMoving=false;
+	}
+	
+	public boolean checkMoving(){
+		return isMoving;
+	}
+
 
 }

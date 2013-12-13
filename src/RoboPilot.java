@@ -56,10 +56,14 @@ public class RoboPilot {
 			map = new Map(nav, cellDistance);
 			
 <<<<<<< HEAD
+<<<<<<< HEAD
 			b1 = new Wander(map);
 			b2 = new Avoid(us,map,nav);
 =======
 			b1 = new Wander(map, nav);
+=======
+			b1 = new Wander(us,map, nav);
+>>>>>>> e0adf0a9abc1e16640325cc0b75731facbe83c4b
 			b2 = new Avoid(us,map);
 >>>>>>> 69fb029410704742586999c92ef238ee3136cc3a
 			
