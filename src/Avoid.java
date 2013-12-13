@@ -4,14 +4,17 @@ import	lejos.robotics.*;
 import	lejos.robotics.subsumption.*;	
 import	lejos.nxt.*;
 import lejos.robotics.navigation.DifferentialPilot;
-
+/**
+ * 
+ * @author tai-lanhirabayashi & Jackie
+ *
+ */
 public class Avoid implements Behavior{
 
 	DifferentialPilot robot; //pilot for navigation
 	UltrasonicSensor us;
 	int blockInRange;
 	Map map;
-	//boolean suppressed = false; 
 
 	/**
 	 * Avoid avoids obstacles
@@ -21,7 +24,11 @@ public class Avoid implements Behavior{
 	public Avoid (UltrasonicSensor u, Map m, DifferentialPilot p){
 		
 		us = u;	
+<<<<<<< HEAD
 		blockInRange = 7; //block in 1 ft
+=======
+		blockInRange = 25 ; //block in 25 cm
+>>>>>>> 69fb029410704742586999c92ef238ee3136cc3a
 		map=m;
 		robot = p;
 	}
@@ -32,6 +39,7 @@ public class Avoid implements Behavior{
 	public boolean takeControl() {
 		//System.out.println("Avoid is trying to take control, current distance is" + " "+ us.getDistance());
 		if (us.getDistance() <= blockInRange && !map.goal()){
+			map.forwardCell().check();
 			//System.out.println("The distance from the wall is" + us.getDistance());
 			return true;
 		}else{
@@ -45,7 +53,15 @@ public class Avoid implements Behavior{
 	@Override
 	public void action() {
 		//doesn't need to move, just report
+<<<<<<< HEAD
+=======
+		//robot.travel(-30,true); // travel backwards 30 cm
+		//while(robot.isMoving()){} //do nothing until he is done backing up
+		//the robot re-orients to a position where the robot is not facing an obstacle by turning to the best direction.
+		System.out.println("Avoiding");
+>>>>>>> 69fb029410704742586999c92ef238ee3136cc3a
 		map.obstacleFound();
+		
 		try	{		
 			Thread.yield();	
 			Thread.sleep(1000);		//	Stops	for	a	short	time	(one	second)		
