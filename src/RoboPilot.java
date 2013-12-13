@@ -4,11 +4,6 @@ import	lejos.robotics.*;
 import	lejos.robotics.subsumption.*;
 import lejos.robotics.navigation.DifferentialPilot;
 
-/**
- * 
- * @author tai-lanhirabayashi & Jackie
- *
- */
 //TODO: finish adding listeners to behavior classes. add the buttons for terminating programs 
 //maybe add the sound behavior when everything works
 //light calibration (realized she wanted us to use the lightsensor so i changed it back)
@@ -16,10 +11,10 @@ import lejos.robotics.navigation.DifferentialPilot;
 
 public class RoboPilot {
 
-		private double trackWidth =11.4; //size of base, centimeters
+		private double trackWidth =11; //size of base, centimeters
 		private double wheelDiameter = 5.6; //size of wheel diameter, centimeters
 		private DifferentialPilot nav; //Pilot to guide robot's rotating and traversing	
-		private double cellDistance = 23; // distance to travel between cells
+		private double cellDistance = 30; // distance to travel between cells
 		private Map map; // the map that the pilot navigates by
 		
 		
@@ -27,8 +22,7 @@ public class RoboPilot {
 		UltrasonicSensor us;
 		//light sensor to sense the goal state
 		ColorSensor cs;	
-		//SoundSensor ss;
-		//LightSensor ls;	
+		SoundSensor ss;
 
 		Behavior b1;
 		Behavior b2;
@@ -48,35 +42,20 @@ public class RoboPilot {
 			nav = new DifferentialPilot (wheelDiameter, trackWidth, Motor.C, Motor.A);
 			us = new UltrasonicSensor(SensorPort.S4);
 			cs = new ColorSensor(SensorPort.S1);
-			//ss = new SoundSensor(SensorPort.S3);
+			ss = new SoundSensor(SensorPort.S2);
 			cs.setFloodlight(Color.WHITE);
-			//ls = new LightSensor(SensorPort.S2);
 			initializePilot();
 			
 			map = new Map(nav, cellDistance);
 			
-<<<<<<< HEAD
-<<<<<<< HEAD
 			b1 = new Wander(map);
-			b2 = new Avoid(us,map,nav);
-=======
-			b1 = new Wander(map, nav);
-=======
-			b1 = new Wander(us,map, nav);
->>>>>>> e0adf0a9abc1e16640325cc0b75731facbe83c4b
 			b2 = new Avoid(us,map);
->>>>>>> 69fb029410704742586999c92ef238ee3136cc3a
 			
 			//TODO test sound sensor it currently creates a barrier wall (implying that the robot is heading in the wrong direction)
 			//This can easily be altered to turns etc... 
-		//	b4 = new Sound(ss,map);
+			b4 = new Sound(ss,map);
 			b3 = new Scope(nav,cs,map);
-		//	bArray = new Behavior[] {b1,b4,b2,b3};
-			
-			//testing without sonic sensor
-			bArray = new Behavior[] {b1,b2, b3};
-
-			//create new arbitrator of the Array of behaviors
+			bArray = new Behavior[] {b1,b4,b2,b3};
 			arby = new Arbitrator(bArray);
 		}
 		

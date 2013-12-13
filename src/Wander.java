@@ -1,31 +1,24 @@
-import lejos.nxt.UltrasonicSensor;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.subsumption.Behavior;
 
-/**
- * 
- * @author tai-lanhirabayashi & Jackie
- *
- */
 public class Wander implements Behavior {
 
 	DifferentialPilot robot;
-	double wanderDistance = 23;
+	int upperThresh;
+	int lowerThresh;
+	double cellDistance;
 	Map map;
-	UltrasonicSensor us;
-	boolean wandering;
 
-	public Wander(UltrasonicSensor u, Map m,DifferentialPilot r ) {
+	public Wander(Map m) {
+		upperThresh = 90;
+		lowerThresh = 10;
 		map = m;
-		robot = r;
-		us = u;
-		wandering = false;
 	}
 
 	@Override
 	public boolean takeControl() {
 		// if all sensors are clear, take control
-		if (!wandering && map.isPossible() && !map.goal()&& !map.checkMoving()) {
+		if (map.isPossible() && !map.goal()) {
 			return true;
 		}
 		// TODO shut down if map is impossible
@@ -34,47 +27,61 @@ public class Wander implements Behavior {
 
 	@Override
 	public void action() {
-		
-		wandering = true;
-		robot.travel(2);
 		try {
 			Thread.yield();
 			Thread.sleep(2000);
-<<<<<<< HEAD
-		} catch (InterruptedException ie) {}
-		//WE NEED TO THINK ABOUT SETTING VALID CHECKERS TO SET NUM OF CELL OPTIONS
-		
-=======
 		} catch (InterruptedException ie) {
 		}
-<<<<<<< HEAD
-		robot.travel(-5);
->>>>>>> 69fb029410704742586999c92ef238ee3136cc3a
-=======
-		map.moving();
->>>>>>> e0adf0a9abc1e16640325cc0b75731facbe83c4b
 		map.wander();
+<<<<<<< HEAD
+=======
 		//if(!map.isBlocked){
 		System.out.println("I'm calling forward!");
-			map.forward();
-			robot.travel(wanderDistance);
+			//moved actual movement to the map.
+			//robot.travel(wanderDistance);
 			//map.setCheck(false);
 		//}
 		wandering = false;
 		map.stopMoving();
+		try {
+			Thread.yield();
+			Thread.sleep(2000);
+		} catch (InterruptedException ie) {
+		}
 		
+>>>>>>> parent of 330ad5b... Revert "WE DID IT"
 	}
-<<<<<<< HEAD
 
+	//
+	// public void findValidDirection(){
+	// if(map.rightIsValid()){
+	// map.turnRight();
+	// robot.rotate(90);
+	// map.forward();
+	// robot.travel(cellDistance);
+	// }else if(map.leftIsValid()){
+	// map.turnLeft();
+	// robot.rotate(-90);
+	// map.forward();
+	// robot.travel(cellDistance);
+	// }else if(map.backIsValid()){
+	// map.turnRight();
+	// robot.rotate(90);
+	// map.turnRight();
+	// robot.rotate(90);
+	// map.forward();
+	// robot.travel(cellDistance);
+	// }else{
+	// map.impossible();
+	// }
+	// }
 
+	
 
-=======
->>>>>>> 69fb029410704742586999c92ef238ee3136cc3a
 	@Override
 	public void suppress() {
 		// update coordinates? stop.
 		map.stop();
-		wandering = false; 
 	}
 
 }

@@ -1,11 +1,7 @@
 import lejos.nxt.SoundSensor;
 import lejos.robotics.subsumption.Behavior;
 
-/**
- * 
- * @author tai-lanhirabayashi & Jackie
- *
- */
+
 public class Sound implements Behavior{
 	
 	private Map map;
