@@ -7,6 +7,7 @@ import lejos.robotics.navigation.DifferentialPilot;
 
 public class Avoid implements Behavior{
 
+	DifferentialPilot robot; //pilot for navigation
 	UltrasonicSensor us;
 	int blockInRange;
 	Map map;
@@ -17,11 +18,12 @@ public class Avoid implements Behavior{
 	 * @param u the ultrasonic sensor that senses obstacles
 	 * @param m the world map containing the navigator
 	 */
-	public Avoid (UltrasonicSensor u, Map m){
+	public Avoid (UltrasonicSensor u, Map m, DifferentialPilot p){
 		
 		us = u;	
-		blockInRange = 30; //block in 1 ft
+		blockInRange = 7; //block in 1 ft
 		map=m;
+		robot = p;
 	}
 	/**
 	 * Avoid takes control when an obstacle within 1ft of the robot is sensed.
@@ -43,13 +45,15 @@ public class Avoid implements Behavior{
 	@Override
 	public void action() {
 		//doesn't need to move, just report
-		//robot.travel(-30,true); // travel backwards 30 cm
-		//while(robot.isMoving()){} //do nothing until he is done backing up
 		map.obstacleFound();
 		try	{		
 			Thread.yield();	
 			Thread.sleep(1000);		//	Stops	for	a	short	time	(one	second)		
 		}catch(InterruptedException	ie)	{}		
+		//TO DO check map and know where to turn - right leaning? have robot turn
+		robot.travel(-3,true); // travel backwards 3 cm
+		while(robot.isMoving()){} //do nothing until he is done backing up
+		
 	}
 
 	@Override

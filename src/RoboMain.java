@@ -1,5 +1,10 @@
 import lejos.nxt.Button;
 
+/**
+ * 
+ * @author tai-lanhirabayashi & Jackie
+ *
+ */
 public class RoboMain {
 
 	/**
