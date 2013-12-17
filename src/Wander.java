@@ -33,23 +33,6 @@ public class Wander implements Behavior {
 		} catch (InterruptedException ie) {
 		}
 		map.wander();
-<<<<<<< HEAD
-=======
-		//if(!map.isBlocked){
-		System.out.println("I'm calling forward!");
-			//moved actual movement to the map.
-			//robot.travel(wanderDistance);
-			//map.setCheck(false);
-		//}
-		wandering = false;
-		map.stopMoving();
-		try {
-			Thread.yield();
-			Thread.sleep(2000);
-		} catch (InterruptedException ie) {
-		}
-		
->>>>>>> parent of 330ad5b... Revert "WE DID IT"
 	}
 
 	//
